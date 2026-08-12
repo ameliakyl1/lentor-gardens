@@ -1,0 +1,185 @@
+---
+import { project } from "@/data/project";
+const { unitTypes, general } = project;
+
+const categories = Array.from(new Set(unitTypes.map((u) => u.bedroomCategory)));
+---
+
+<section id="floorplans" class="bg-surface">
+  <div class="container">
+    <div class="section-heading reveal-on-scroll">
+      <span class="section-eyebrow">Floorplans</span>
+      <h2>Explore Unit Layouts</h2>
+      <p>Filter by unit type to view indicative floorplans. Final layouts are subject to the developer's official floorplan set.</p>
+    </div>
+
+    <div class="filter-bar" role="group" aria-label="Filter floorplans by bedroom type">
+      <button type="button" class="filter-chip is-active" data-filter="all">All</button>
+      {categories.map((cat) => (
+        <button type="button" class="filter-chip" data-filter={cat}>{cat}</button>
+      ))}
+    </div>
+
+    <div class="floorplan-grid">
+      {unitTypes.map((unit, i) => unit.floorplanImage && (
+        <button
+          type="button"
+          class="floorplan-card card reveal-on-scroll"
+          data-category={unit.bedroomCategory}
+          data-modal-trigger={`floorplan-${i}`}
+        >
+          <img
+            src={unit.floorplanImage.src}
+            alt={unit.floorplanImage.alt}
+            width={unit.floorplanImage.width}
+            height={unit.floorplanImage.height}
+            loading="lazy"
+            decoding="async"
+          />
+          <div class="floorplan-card-body">
+            <h3>{unit.type}</h3>
+            <p>{unit.approxAreaSqft} sqft (approx.)</p>
+            <span class="availability-tag">{unit.availability}</span>
+          </div>
+        </button>
+      ))}
+    </div>
+
+    <p class="floorplan-meta">Floorplans last updated: {general.lastUpdated}. Availability is indicative and subject to change.</p>
+    <a href="#contact" class="btn btn-accent" data-track="request_floorplans">Request Full Floorplan Collection</a>
+  </div>
+
+  {unitTypes.map((unit, i) => unit.floorplanImage && (
+    <div
+      class="floorplan-modal"
+      id={`floorplan-${i}`}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby={`floorplan-${i}-title`}
+      hidden
+    >
+      <div class="floorplan-modal-backdrop" data-modal-close></div>
+      <div class="floorplan-modal-content">
+        <button type="button" class="modal-close" data-modal-close aria-label="Close floorplan viewer">✕</button>
+        <h3 id={`floorplan-${i}-title`}>{unit.type}</h3>
+        <img
+          src={unit.floorplanImage.src}
+          alt={unit.floorplanImage.alt}
+          width={unit.floorplanImage.width}
+          height={unit.floorplanImage.height}
+        />
+      </div>
+    </div>
+  ))}
+</section>
+
+<style>
+  .floorplan-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); margin-bottom: var(--space-8); }
+  @media (max-width: 900px) { .floorplan-grid { grid-template-columns: 1fr 1fr; } }
+  @media (max-width: 640px) { .floorplan-grid { grid-template-columns: 1fr; } }
+
+  .floorplan-card { padding: 0; overflow: hidden; text-align: left; cursor: pointer; font: inherit; }
+  .floorplan-card img { width: 100%; height: auto; }
+  .floorplan-card-body { padding: var(--space-4); }
+  .floorplan-card-body h3 { margin-bottom: var(--space-1); font-size: 1.1rem; }
+  .floorplan-card-body p { font-size: 0.85rem; color: var(--color-ink-soft); margin-bottom: var(--space-2); }
+  .availability-tag { font-size: 0.75rem; font-weight: 600; color: var(--color-accent-strong); }
+
+  .floorplan-meta { font-size: 0.85rem; color: var(--color-ink-soft); margin-bottom: var(--space-6); }
+
+  .floorplan-modal { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; }
+  .floorplan-modal[hidden] { display: none; }
+  .floorplan-modal-backdrop { position: absolute; inset: 0; background: rgba(14, 20, 15, 0.7); }
+  .floorplan-modal-content {
+    position: relative;
+    background: var(--color-surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    max-width: 90vw;
+    max-height: 90vh;
+    overflow: auto;
+  }
+  .floorplan-modal-content img { max-width: 100%; height: auto; }
+  .modal-close {
+    position: absolute;
+    top: var(--space-3);
+    right: var(--space-3);
+    background: var(--color-stone);
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+  }
+</style>
+
+<script>
+  const chips = document.querySelectorAll<HTMLButtonElement>(".filter-chip");
+  const cards = document.querySelectorAll<HTMLButtonElement>(".floorplan-card");
+
+  chips.forEach((chip) => {
+    chip.addEventListener("click", () => {
+      chips.forEach((c) => c.classList.remove("is-active"));
+      chip.classList.add("is-active");
+      const filter = chip.dataset.filter;
+      cards.forEach((card) => {
+        const show = filter === "all" || card.dataset.category === filter;
+        card.style.display = show ? "" : "none";
+      });
+    });
+  });
+
+  let lastFocused: HTMLElement | null = null;
+
+  function openModal(modal: HTMLElement) {
+    lastFocused = document.activeElement as HTMLElement;
+    modal.hidden = false;
+    const closeBtn = modal.querySelector<HTMLButtonElement>(".modal-close");
+    closeBtn?.focus();
+
+    function trap(e: KeyboardEvent) {
+      if (e.key === "Escape") {
+        close();
+      } else if (e.key === "Tab") {
+        const focusable = modal.querySelectorAll<HTMLElement>("button, [href], img");
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
+    }
+
+    function close() {
+      modal.hidden = true;
+      document.removeEventListener("keydown", trap);
+      lastFocused?.focus();
+    }
+
+    modal.querySelectorAll("[data-modal-close]").forEach((el) =>
+      el.addEventListener("click", close, { once: true })
+    );
+    document.addEventListener("keydown", trap);
+  }
+
+  cards.forEach((card) => {
+    card.addEventListener("click", () => {
+      const targetId = card.dataset.modalTrigger;
+      if (!targetId) return;
+      const modal = document.getElementById(targetId);
+      if (modal) openModal(modal);
+    });
+  });
+
+  document.querySelectorAll<HTMLAnchorElement>('[data-track="request_floorplans"]').forEach((el) => {
+    el.addEventListener("click", () => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "request_floorplans" });
+    });
+  });
+</script>

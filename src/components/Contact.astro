@@ -1,0 +1,261 @@
+---
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+
+const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}?text=${encodeURIComponent(
+  project.contact.whatsappMessage
+)}`;
+---
+
+<section id="contact" class="bg-surface">
+  <div class="container contact-grid">
+    <div class="contact-intro reveal-on-scroll">
+      <span class="section-eyebrow">Contact</span>
+      <h2>Book a Showflat Appointment</h2>
+      <p>
+        Share a few details and Amelia will follow up to confirm a showflat viewing time, or
+        answer any questions about {project.general.projectName}. You can also reach out directly
+        by phone or WhatsApp.
+      </p>
+
+      <div class="contact-direct">
+        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn-accent" data-track="click_whatsapp">
+          WhatsApp {agent.displayName}
+        </a>
+        <a href={`tel:${agent.mobileNumber.replace(/\s/g, "")}`} class="btn btn-secondary" data-track="click_call">
+          Call {agent.displayName}
+        </a>
+        <a href={`mailto:${agent.email}`} class="btn btn-secondary">Email</a>
+      </div>
+
+      <p class="response-note">
+        Amelia typically responds to enquiries within one business day. This is not a guaranteed
+        response time.
+      </p>
+
+      <p class="agent-credentials">
+        {agent.fullName} · CEA Registration No.: {agent.ceaRegistrationNumber} · {agent.estateAgencyName}
+        (Licence No.: {agent.estateAgencyLicenceNumber})
+        <br />
+        <a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer">Verify on CEA Public Register</a>
+      </p>
+    </div>
+
+    <form id="enquiry-form" class="contact-form card reveal-on-scroll" novalidate>
+      <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+
+      <div class="form-field">
+        <label class="form-label" for="fullName">Full Name</label>
+        <input class="form-input" type="text" id="fullName" name="fullName" autocomplete="name" required />
+        <p class="form-error" id="fullName-error" hidden></p>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="mobileNumber">Singapore Mobile Number</label>
+        <input class="form-input" type="tel" id="mobileNumber" name="mobileNumber" autocomplete="tel" placeholder="9123 4567" required />
+        <p class="form-error" id="mobileNumber-error" hidden></p>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="email">Email Address (optional)</label>
+        <input class="form-input" type="email" id="email" name="email" autocomplete="email" />
+        <p class="form-error" id="email-error" hidden></p>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="preferredUnitType">Preferred Unit Type</label>
+        <select class="form-select" id="preferredUnitType" name="preferredUnitType">
+          <option value="">No preference</option>
+          {project.unitTypes.map((u) => <option value={u.type}>{u.type}</option>)}
+        </select>
+      </div>
+
+      <div class="form-field">
+        <span class="form-label" id="contact-method-label">Preferred Contact Method</span>
+        <div class="radio-group" role="radiogroup" aria-labelledby="contact-method-label">
+          <label><input type="radio" name="preferredContactMethod" value="Call" required /> Call</label>
+          <label><input type="radio" name="preferredContactMethod" value="WhatsApp" /> WhatsApp</label>
+          <label><input type="radio" name="preferredContactMethod" value="Email" /> Email</label>
+        </div>
+        <p class="form-error" id="preferredContactMethod-error" hidden></p>
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="preferredViewingDate">Preferred Viewing Date (optional)</label>
+        <input class="form-input" type="date" id="preferredViewingDate" name="preferredViewingDate" />
+      </div>
+
+      <div class="form-field">
+        <label class="form-label" for="message">Message (optional)</label>
+        <textarea class="form-textarea" id="message" name="message"></textarea>
+      </div>
+
+      <!-- Honeypot: hidden from real users, catches basic bots. Never rename to something obvious like "honeypot". -->
+      <div class="honeypot-field" aria-hidden="true">
+        <label for="companyWebsite">Leave this field blank</label>
+        <input type="text" id="companyWebsite" name="companyWebsite" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div class="checkbox-field">
+        <input type="checkbox" id="consentEnquiry" name="consentEnquiry" required />
+        <label for="consentEnquiry">
+          By submitting this enquiry, I confirm that I have read the
+          <a href="/privacy">Privacy Policy</a> and consent to {agent.fullName} of
+          {agent.estateAgencyName} contacting me regarding this property enquiry through my
+          selected contact method.
+        </label>
+      </div>
+      <p class="form-error" id="consentEnquiry-error" hidden></p>
+
+      <div class="checkbox-field">
+        <input type="checkbox" id="consentMarketing" name="consentMarketing" />
+        <label for="consentMarketing">
+          I would also like to receive information about other Singapore property launches and
+          relevant property market updates. I understand that I may withdraw my consent at any time.
+        </label>
+      </div>
+
+      <button type="submit" class="btn btn-accent btn-block" id="submit-btn">
+        <span id="submit-btn-label">Submit Enquiry</span>
+      </button>
+    </form>
+  </div>
+</section>
+
+<style>
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: var(--space-12); align-items: start; }
+  @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-direct { display: flex; gap: var(--space-4); flex-wrap: wrap; margin: var(--space-6) 0 var(--space-4); }
+  .response-note { font-size: 0.85rem; color: var(--color-ink-soft); }
+  .agent-credentials { font-size: 0.85rem; color: var(--color-ink-soft); margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
+  .agent-credentials a { font-size: 0.85rem; }
+  .radio-group { display: flex; gap: var(--space-4); flex-wrap: wrap; font-size: 0.92rem; }
+  .radio-group label { display: flex; align-items: center; gap: var(--space-2); }
+  .form-status:not(:empty) { padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); margin-bottom: var(--space-4); font-size: 0.9rem; }
+  .form-status[data-state="success"] { background: color-mix(in srgb, var(--color-success) 12%, transparent); color: var(--color-success); }
+  .form-status[data-state="error"] { background: color-mix(in srgb, var(--color-error) 12%, transparent); color: var(--color-error); }
+</style>
+
+<script>
+  import { validateEnquiry, type EnquiryFormData } from "@/utils/validation";
+  import { project } from "@/data/project";
+
+  const form = document.getElementById("enquiry-form") as HTMLFormElement | null;
+  const statusEl = document.getElementById("form-status");
+  const submitBtn = document.getElementById("submit-btn") as HTMLButtonElement | null;
+  const submitLabel = document.getElementById("submit-btn-label");
+  let started = false;
+
+  function getAttribution() {
+    const params = new URLSearchParams(window.location.search);
+    const get = (k: string) => params.get(k);
+    return {
+      utm_source: get("utm_source"),
+      utm_medium: get("utm_medium"),
+      utm_campaign: get("utm_campaign"),
+      utm_term: get("utm_term"),
+      utm_content: get("utm_content"),
+      gclid: get("gclid"),
+      gbraid: get("gbraid"),
+      wbraid: get("wbraid"),
+      landingPageUrl: window.location.href,
+      referrer: document.referrer || null,
+    };
+  }
+
+  function showFieldError(field: string, message?: string) {
+    const input = document.getElementById(field);
+    const errorEl = document.getElementById(`${field}-error`);
+    if (input) input.setAttribute("aria-invalid", message ? "true" : "false");
+    if (errorEl) {
+      errorEl.textContent = message ?? "";
+      errorEl.hidden = !message;
+    }
+  }
+
+  form?.addEventListener(
+    "focusin",
+    () => {
+      if (!started) {
+        started = true;
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: "form_start" });
+      }
+    },
+    { once: true }
+  );
+
+  form?.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    if (!form || !submitBtn || !submitLabel) return;
+
+    const formData = new FormData(form);
+    const data: EnquiryFormData = {
+      fullName: String(formData.get("fullName") ?? ""),
+      mobileNumber: String(formData.get("mobileNumber") ?? ""),
+      email: String(formData.get("email") ?? ""),
+      propertyInterest: project.general.projectName,
+      preferredUnitType: String(formData.get("preferredUnitType") ?? ""),
+      preferredContactMethod: String(formData.get("preferredContactMethod") ?? ""),
+      preferredViewingDate: String(formData.get("preferredViewingDate") ?? ""),
+      message: String(formData.get("message") ?? ""),
+      consentEnquiry: formData.get("consentEnquiry") === "on",
+      consentMarketing: formData.get("consentMarketing") === "on",
+      honeypot: String(formData.get("companyWebsite") ?? ""),
+    };
+
+    ["fullName", "mobileNumber", "email", "preferredContactMethod", "consentEnquiry"].forEach((f) =>
+      showFieldError(f)
+    );
+
+    const errors = validateEnquiry(data);
+    if (Object.keys(errors).length > 0 && !errors.honeypot) {
+      Object.entries(errors).forEach(([field, message]) => showFieldError(field, message));
+      if (statusEl) {
+        statusEl.dataset.state = "error";
+        statusEl.textContent = "Please correct the highlighted fields and try again.";
+      }
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "form_error" });
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitLabel.textContent = "Submitting…";
+    if (statusEl) {
+      statusEl.dataset.state = "";
+      statusEl.textContent = "";
+    }
+
+    try {
+      const response = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...data, attribution: getAttribution() }),
+      });
+
+      if (errors.honeypot) {
+        // Bots see a normal-looking success without a real submission having occurred.
+        window.location.href = "/thank-you";
+        return;
+      }
+
+      if (!response.ok) throw new Error("Submission failed");
+
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "form_submit" });
+      window.dataLayer.push({ event: "generate_lead" });
+      window.location.href = "/thank-you";
+    } catch {
+      if (statusEl) {
+        statusEl.dataset.state = "error";
+        statusEl.textContent =
+          "Something went wrong sending your enquiry. Please try again, or contact Amelia directly by phone or WhatsApp.";
+      }
+      submitBtn.disabled = false;
+      submitLabel.textContent = "Submit Enquiry";
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "form_error" });
+    }
+  });
+</script>

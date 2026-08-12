@@ -1,0 +1,28 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+---
+
+<BaseLayout
+  title="Page Not Found"
+  description="The page you are looking for could not be found."
+  noindex={true}
+>
+  <Header />
+  <main id="main-content">
+    <section class="bg-surface not-found">
+      <div class="container not-found-content">
+        <h1>Page not found</h1>
+        <p>The page you're looking for may have moved or no longer exists.</p>
+        <a href="/" class="btn btn-primary">Return to Homepage</a>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .not-found { padding-block: var(--space-24); text-align: center; }
+  .not-found-content { max-width: 500px; margin-inline: auto; }
+</style>

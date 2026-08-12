@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Ensure Google AdsBot is never blocked — required for Google Ads landing page approval.
+User-agent: AdsBot-Google
+Allow: /
+
+Sitemap: https://example-new-launch.vercel.app/sitemap-index.xml

@@ -1,0 +1,25 @@
+# build
+dist/
+.astro/
+node_modules/
+
+# env
+.env
+.env.local
+
+# logs
+*.log
+npm-debug.log*
+
+# editor
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+
+# playwright
+test-results/
+playwright-report/
+playwright/.cache/
+
+# local dev lead log (see src/pages/api/enquiry.ts)
+.leads/

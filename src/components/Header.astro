@@ -1,0 +1,247 @@
+---
+import { nav } from "@/data/site";
+import { project } from "@/data/project";
+---
+
+<header class="site-header" id="site-header">
+  <div class="container header-inner">
+    <a href="#top" class="brand" aria-label={`${project.general.projectName} — back to top`}>
+      <img
+        src={project.media.projectLogo.src}
+        alt={project.media.projectLogo.alt}
+        width="216"
+        height="80"
+        class="brand-logo"
+      />
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} data-nav-link data-target={item.href}>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+
+    <a href="#contact" class="desktop-cta" data-track="book_showflat">Book Showflat</a>
+
+    <button
+      class="menu-toggle"
+      id="menu-toggle"
+      aria-expanded="false"
+      aria-controls="mobile-menu"
+      aria-label="Open menu"
+    >
+      <span class="menu-toggle-bar"></span>
+      <span class="menu-toggle-bar"></span>
+      <span class="menu-toggle-bar"></span>
+    </button>
+  </div>
+
+  <div id="mobile-menu" class="mobile-menu" data-state="closed" aria-hidden="true">
+    <nav aria-label="Mobile primary">
+      <ul>
+        {nav.map((item) => (
+          <li>
+            <a href={item.href} data-mobile-nav-link>{item.label}</a>
+          </li>
+        ))}
+      </ul>
+    </nav>
+    <a href="#contact" class="btn btn-accent btn-block" data-mobile-nav-link>Book Showflat</a>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: var(--color-brand);
+    border-bottom: 1px solid var(--color-brand);
+  }
+
+  .header-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-8);
+    height: var(--nav-height);
+  }
+
+  .brand {
+    flex-shrink: 0;
+    line-height: 0;
+    display: flex;
+    align-items: center;
+  }
+  .brand-logo { height: 62px; width: auto; }
+
+  .primary-nav { margin-left: auto; min-width: 0; }
+  .primary-nav ul {
+    display: flex;
+    gap: var(--space-6);
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .primary-nav a {
+    text-decoration: none;
+    white-space: nowrap;
+    color: var(--color-on-brand);
+    opacity: 0.85;
+    font-weight: 500;
+    font-size: 0.78rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    padding: var(--space-2) 0;
+    border-bottom: 1px solid transparent;
+    transition: color 150ms ease, border-color 150ms ease;
+  }
+  .primary-nav a:hover,
+  .primary-nav a[aria-current="true"] {
+    color: var(--color-on-brand-accent);
+    opacity: 1;
+    border-bottom-color: var(--color-on-brand-accent);
+  }
+
+  .desktop-cta {
+    flex-shrink: 0;
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding-inline: var(--space-8);
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    transition: background-color 150ms ease;
+  }
+  .desktop-cta:hover { background: var(--color-accent-strong); }
+
+  .menu-toggle {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    width: 44px;
+    height: 44px;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.4);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+  .menu-toggle-bar {
+    display: block;
+    width: 20px;
+    height: 2px;
+    background: var(--color-on-brand);
+    margin-inline: auto;
+  }
+
+  .mobile-menu {
+    display: none;
+  }
+
+  @media (max-width: 1240px) {
+    .primary-nav, .desktop-cta { display: none; }
+    .menu-toggle { display: flex; }
+
+    .mobile-menu {
+      display: block;
+      position: fixed;
+      inset: var(--nav-height) 0 0 0;
+      background: var(--color-bg);
+      padding: var(--space-8) var(--space-6);
+      transform: translateY(-8px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 180ms ease, transform 180ms ease;
+      overflow-y: auto;
+    }
+    .mobile-menu[data-state="open"] {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+    .mobile-menu ul {
+      list-style: none;
+      margin: 0 0 var(--space-8);
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+    .mobile-menu a {
+      display: block;
+      padding: var(--space-3) 0;
+      font-size: 1.1rem;
+      text-decoration: none;
+      color: var(--color-ink);
+      border-bottom: 1px solid var(--color-border);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .mobile-menu { transition: none; }
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById("menu-toggle") as HTMLButtonElement | null;
+  const menu = document.getElementById("mobile-menu");
+  const mobileLinks = document.querySelectorAll<HTMLAnchorElement>("[data-mobile-nav-link]");
+
+  function openMenu() {
+    if (!toggle || !menu) return;
+    menu.dataset.state = "open";
+    menu.setAttribute("aria-hidden", "false");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-label", "Close menu");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeMenu() {
+    if (!toggle || !menu) return;
+    menu.dataset.state = "closed";
+    menu.setAttribute("aria-hidden", "true");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open menu");
+    document.body.style.overflow = "";
+  }
+
+  toggle?.addEventListener("click", () => {
+    if (menu?.dataset.state === "open") closeMenu();
+    else openMenu();
+  });
+
+  mobileLinks.forEach((link) => link.addEventListener("click", closeMenu));
+
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && menu?.dataset.state === "open") closeMenu();
+  });
+
+  // Active-section highlighting
+  const sections = Array.from(document.querySelectorAll<HTMLElement>("main > section[id]"));
+  const navLinks = document.querySelectorAll<HTMLAnchorElement>("[data-nav-link]");
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        const id = `#${entry.target.id}`;
+        navLinks.forEach((link) => {
+          if (link.dataset.target === id) link.setAttribute("aria-current", "true");
+          else link.removeAttribute("aria-current");
+        });
+      });
+    },
+    { rootMargin: "-40% 0px -55% 0px" }
+  );
+
+  sections.forEach((section) => observer.observe(section));
+</script>

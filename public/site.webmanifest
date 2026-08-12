@@ -1,0 +1,15 @@
+{
+  "name": "[PROJECT NAME] | Amelia Lek, Huttons Asia",
+  "short_name": "[PROJECT NAME]",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f4f4ea",
+  "theme_color": "#7e553a",
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ]
+}

@@ -1,0 +1,37 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+---
+
+<BaseLayout
+  title={`Thank You | ${project.general.projectName}`}
+  description="Your enquiry has been received."
+  noindex={true}
+>
+  <Header />
+  <main id="main-content">
+    <section class="bg-surface thank-you">
+      <div class="container thank-you-content">
+        <h1>Thank you — your enquiry has been received</h1>
+        <p>
+          {agent.fullName} will be in touch shortly to follow up on your enquiry regarding{" "}
+          {project.general.projectName}. If your matter is urgent, you can reach Amelia directly.
+        </p>
+        <div class="thank-you-actions">
+          <a href={`tel:${agent.mobileNumber.replace(/\s/g, "")}`} class="btn btn-secondary">Call {agent.displayName}</a>
+          <a href="/" class="btn btn-primary">Return to Homepage</a>
+        </div>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .thank-you { padding-block: var(--space-24); text-align: center; }
+  .thank-you-content { max-width: 600px; margin-inline: auto; }
+  .thank-you-actions { display: flex; gap: var(--space-4); justify-content: center; flex-wrap: wrap; margin-top: var(--space-6); }
+</style>

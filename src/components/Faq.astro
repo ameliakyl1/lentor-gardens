@@ -1,0 +1,79 @@
+---
+import { project } from "@/data/project";
+const { faq } = project;
+---
+
+<section id="faq" class="bg-surface">
+  <div class="container">
+    <div class="section-heading reveal-on-scroll">
+      <span class="section-eyebrow">FAQ</span>
+      <h2>Frequently Asked Questions</h2>
+    </div>
+
+    <div class="faq-list">
+      {faq.map((item, i) => (
+        <div class="faq-item card reveal-on-scroll">
+          <h3>
+            <button
+              type="button"
+              class="faq-trigger"
+              aria-expanded="false"
+              aria-controls={`faq-panel-${i}`}
+              id={`faq-trigger-${i}`}
+            >
+              <span>{item.question}</span>
+              <span class="faq-icon" aria-hidden="true">+</span>
+            </button>
+          </h3>
+          <div
+            id={`faq-panel-${i}`}
+            class="faq-panel"
+            role="region"
+            aria-labelledby={`faq-trigger-${i}`}
+            hidden
+          >
+            <p>{item.answer}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq-list { display: flex; flex-direction: column; gap: var(--space-3); max-width: 800px; }
+  .faq-item { padding: 0; }
+  .faq-item h3 { margin: 0; font-family: var(--font-sans); font-size: 1rem; }
+  .faq-trigger {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    background: none;
+    border: none;
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    padding: var(--space-4) var(--space-6);
+    cursor: pointer;
+    color: var(--color-ink);
+  }
+  .faq-icon { font-size: 1.2rem; color: var(--color-accent-strong); transition: transform 150ms ease; }
+  .faq-trigger[aria-expanded="true"] .faq-icon { transform: rotate(45deg); }
+  .faq-panel { padding: 0 var(--space-6) var(--space-4); }
+  .faq-panel p { margin: 0; color: var(--color-ink-soft); }
+</style>
+
+<script>
+  const triggers = document.querySelectorAll<HTMLButtonElement>(".faq-trigger");
+  triggers.forEach((trigger) => {
+    trigger.addEventListener("click", () => {
+      const expanded = trigger.getAttribute("aria-expanded") === "true";
+      const panelId = trigger.getAttribute("aria-controls");
+      const panel = panelId ? document.getElementById(panelId) : null;
+      trigger.setAttribute("aria-expanded", String(!expanded));
+      if (panel) panel.hidden = expanded;
+    });
+  });
+</script>

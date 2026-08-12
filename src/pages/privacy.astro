@@ -1,0 +1,128 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+---
+
+<BaseLayout
+  title={`Privacy Policy | ${project.general.projectName}`}
+  description="Privacy Policy for this independent property marketing website operated by Amelia Lek, Huttons Asia Pte Ltd."
+>
+  <Header />
+  <main id="main-content">
+    <section class="bg-surface legal-page">
+      <div class="container legal-content">
+        <h1>Privacy Policy</h1>
+        <p class="disclaimer-box">
+          This page is a template and has not been reviewed by a lawyer. It must be reviewed
+          for accuracy and legal sufficiency, including compliance with Singapore's Personal
+          Data Protection Act (PDPA), before this website is published.
+        </p>
+
+        <h2>Who operates this website</h2>
+        <p>
+          This website is operated by {agent.fullName} ({agent.ceaRegistrationNumber}), a
+          CEA-registered salesperson with {agent.estateAgencyName}
+          ({agent.estateAgencyLicenceNumber}). It is an independent marketing website and is not
+          the official developer website for {project.general.projectName}.
+        </p>
+
+        <h2>Information we collect</h2>
+        <p>
+          When you submit an enquiry through this website, we collect the information you
+          provide, which may include your name, mobile number, email address, property and
+          unit-type preferences, preferred contact method, preferred viewing date, and any
+          message you include. We also automatically collect attribution information such as
+          campaign parameters (UTM parameters, Google Ads click identifiers), the page you
+          submitted from, and your browser's referrer, to help understand which marketing
+          channels generated the enquiry.
+        </p>
+
+        <h2>Purpose of collection</h2>
+        <p>
+          We use this information to respond to your enquiry, arrange showflat appointments,
+          share requested materials such as price lists, floorplans and brochures, and — only
+          if you separately opt in — to share information about other Singapore property
+          launches and market updates.
+        </p>
+
+        <h2>Enquiry handling and contact methods</h2>
+        <p>
+          Enquiries are handled directly by {agent.fullName}. We will contact you using the
+          contact method you select in the enquiry form (call, WhatsApp, or email).
+        </p>
+
+        <h2>Optional marketing communications</h2>
+        <p>
+          Marketing updates about other property launches are sent only if you tick the
+          optional consent checkbox on the enquiry form. You may withdraw this consent at any
+          time by contacting {agent.email}.
+        </p>
+
+        <h2>Analytics and advertising technologies</h2>
+        <p>
+          This website uses analytics and advertising measurement tools (such as Google
+          Analytics, Google Ads conversion tracking, Google Tag Manager, and Meta Pixel) to
+          understand website usage and measure the effectiveness of advertising campaigns.
+          These tools may set cookies or use similar technologies. Analytics and advertising
+          storage are only activated after you provide consent through the cookie notice on
+          this website, in line with Google Consent Mode.
+        </p>
+
+        <h2>Cookies</h2>
+        <p>
+          Cookies are small text files stored on your device. You can manage or withdraw
+          cookie consent at any time using your browser settings or the cookie notice on this
+          site.
+        </p>
+
+        <h2>Data sharing</h2>
+        <p>
+          Enquiry information may be shared with {agent.estateAgencyName} for the purpose of
+          following up on your enquiry, and with service providers that support lead management
+          (such as a CRM or email delivery service), strictly for that purpose.
+        </p>
+
+        <h2>Data retention</h2>
+        <p>
+          We retain enquiry information for as long as necessary to respond to your enquiry and
+          for a reasonable period afterward for record-keeping, unless you request deletion
+          sooner.
+        </p>
+
+        <h2>Data security</h2>
+        <p>
+          We take reasonable technical and organisational measures to protect the information
+          you provide. No method of transmission or storage is completely secure.
+        </p>
+
+        <h2>Access and correction requests</h2>
+        <p>
+          You may request access to, or correction of, your personal data by contacting
+          {agent.email}.
+        </p>
+
+        <h2>Withdrawal of consent</h2>
+        <p>
+          You may withdraw your consent to be contacted, or to receive marketing
+          communications, at any time by contacting {agent.email} or {agent.mobileNumber}.
+        </p>
+
+        <h2>Privacy contact</h2>
+        <p>
+          For privacy-related questions, contact {agent.fullName} at {agent.email} or{" "}
+          {agent.mobileNumber}.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-page { padding-block: var(--space-16); }
+  .legal-content { max-width: 760px; }
+  .legal-content h2 { margin-top: var(--space-8); }
+</style>

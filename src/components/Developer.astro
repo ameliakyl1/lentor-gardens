@@ -1,0 +1,65 @@
+---
+import { project } from "@/data/project";
+const { media, content, general } = project;
+
+// Converts *emphasized* segments to <strong> for paragraphs with markup, escaping the rest.
+function renderEmphasis(text: string): string {
+  const escape = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return text
+    .split(/(\*[^*]+\*)/g)
+    .map((part) =>
+      part.startsWith("*") && part.endsWith("*")
+        ? `<strong>${escape(part.slice(1, -1))}</strong>`
+        : escape(part)
+    )
+    .join("");
+}
+---
+
+<section id="developer" class="bg-surface">
+  <div class="container developer-grid">
+    <div class="developer-logo-wrap reveal-on-scroll">
+      <img
+        src={media.developerLogo.src}
+        alt={media.developerLogo.alt}
+        width={media.developerLogo.width}
+        height={media.developerLogo.height}
+        loading="lazy"
+        decoding="async"
+      />
+    </div>
+
+    <div class="developer-content reveal-on-scroll">
+      <span class="section-eyebrow">About the Developer</span>
+      <h2>{general.developerShortName}</h2>
+      {content.developerProfile.split("\n\n").map((para) => <p set:html={renderEmphasis(para)} />)}
+      <p class="disclaimer-box">
+        This section describes the developer of {general.projectName}. It is provided for
+        general reference and does not imply that this website is operated by, or officially
+        endorsed by, the developer.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .developer-grid { display: grid; grid-template-columns: 320px 1fr; gap: var(--space-12); align-items: start; }
+  @media (max-width: 700px) { .developer-grid { grid-template-columns: 1fr; } }
+
+  .developer-content { max-width: 760px; }
+
+  .developer-logo-wrap {
+    display: flex;
+    align-items: center;
+    padding: var(--space-4) var(--space-6);
+    background: #ffffff;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+  }
+  .developer-logo-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+</style>

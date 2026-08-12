@@ -1,0 +1,65 @@
+---
+// Minimal, non-blocking cookie/consent notice compatible with Google Consent Mode v2.
+// This is a template starting point, not legal advice — have counsel confirm wording
+// and mechanism suit your jurisdiction and ad platforms before launch.
+---
+
+<div id="consent-notice" class="consent-notice" role="region" aria-label="Cookie consent" hidden>
+  <div class="consent-inner">
+    <p>
+      We use cookies and similar technologies for analytics and advertising measurement. See our
+      <a href="/privacy">Privacy Policy</a> for details. You can change your choice at any time.
+    </p>
+    <div class="consent-actions">
+      <button type="button" class="btn btn-secondary" id="consent-decline">Decline non-essential</button>
+      <button type="button" class="btn btn-accent" id="consent-accept">Accept all</button>
+    </div>
+  </div>
+</div>
+
+<style>
+  .consent-notice {
+    position: fixed;
+    left: var(--space-4);
+    right: var(--space-4);
+    bottom: calc(var(--mobile-bar-height) + var(--space-4));
+    z-index: 200;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    padding: var(--space-4) var(--space-6);
+    max-width: 640px;
+    margin-inline: auto;
+  }
+  @media (min-width: 901px) {
+    .consent-notice { bottom: var(--space-6); }
+  }
+  .consent-inner p { margin-bottom: var(--space-3); font-size: 0.9rem; }
+  .consent-actions { display: flex; gap: var(--space-3); flex-wrap: wrap; }
+</style>
+
+<script>
+  import { setConsent, getStoredConsent } from "@/utils/tracking";
+
+  const notice = document.getElementById("consent-notice");
+  const acceptBtn = document.getElementById("consent-accept");
+  const declineBtn = document.getElementById("consent-decline");
+
+  if (notice) {
+    const stored = getStoredConsent();
+    if (!stored) {
+      notice.hidden = false;
+    }
+
+    acceptBtn?.addEventListener("click", () => {
+      setConsent({ analytics_storage: "granted", ad_storage: "granted" });
+      notice.hidden = true;
+    });
+
+    declineBtn?.addEventListener("click", () => {
+      setConsent({ analytics_storage: "denied", ad_storage: "denied" });
+      notice.hidden = true;
+    });
+  }
+</script>

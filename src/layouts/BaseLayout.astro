@@ -1,0 +1,156 @@
+---
+import "@/styles/global.css";
+import { project } from "@/data/project";
+import { site, activeTheme } from "@/data/site";
+import {
+  buildOrganizationSchema,
+  buildWebSiteSchema,
+  buildWebPageSchema,
+  buildBreadcrumbSchema,
+} from "@/utils/structuredData";
+
+interface Props {
+  title: string;
+  description: string;
+  noindex?: boolean;
+  structuredData?: Record<string, unknown>[];
+}
+
+const { title, description, noindex = false, structuredData = [] } = Astro.props;
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+
+const baseSchemas = [
+  buildOrganizationSchema(),
+  buildWebSiteSchema(canonicalUrl),
+  buildWebPageSchema(canonicalUrl, title, description),
+  buildBreadcrumbSchema(canonicalUrl),
+  ...structuredData,
+];
+---
+
+<!doctype html>
+<html lang="en" data-theme={activeTheme}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+
+    <!-- Open Graph / social sharing -->
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={new URL(project.media.heroImage.src, Astro.site).toString()} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="manifest" href="/site.webmanifest" />
+
+    <!--
+      Preload the hero image (the LCP element) so the browser's preload scanner fetches it
+      immediately, before it finishes parsing the rest of <head>. Most Google Ads traffic to
+      this template lands on mobile, so the mobile crop is preloaded with higher priority via
+      the media query — it must match the <source media="(max-width: 700px)"> breakpoint in
+      Hero.astro exactly, or the browser will fetch the wrong variant twice.
+    -->
+    <link
+      rel="preload"
+      as="image"
+      href={project.media.heroImage.mobileSrc}
+      media="(max-width: 700px)"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href={project.media.heroImage.src}
+      media="(min-width: 701px)"
+      fetchpriority="high"
+    />
+
+    <!-- Browser chrome tint (mobile address bar, task switcher) — matches the brand navy/gold theme. -->
+    <meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#14131f" media="(prefers-color-scheme: dark)" />
+
+    <!--
+      Fonts: loaded with font-display swap and preconnect to avoid layout shift / render block.
+      Domine (serif) and Sora (geometric sans) are freely-licensed stand-ins chosen to echo the
+      clean, minimal display type used throughout the Lentor Gardens Residences Architect
+      Briefing (V2, 25 May 2026), paired with the briefing's own navy/gold palette in
+      src/styles/global.css.
+    -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    {structuredData !== undefined &&
+      baseSchemas.map((schema) => (
+        <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+      ))}
+
+    <!--
+      Google Tag Manager placeholder — NOT a live tracking install.
+      Replace PUBLIC_GTM_ID in .env with a real container ID, and confirm Consent Mode
+      defaults below match your privacy policy, before enabling this in production.
+      Consent Mode v2 defaults to "denied" until the visitor accepts via ConsentNotice.astro.
+    -->
+    <script is:inline>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag("consent", "default", {
+        analytics_storage: "denied",
+        ad_storage: "denied",
+        wait_for_update: 500,
+      });
+    </script>
+  </head>
+  <body>
+    <a href="#main-content" class="skip-link">Skip to main content</a>
+    <slot />
+
+    <script>
+      // Lazy-scroll reveal: fades/lifts .reveal-on-scroll elements into place as they enter the
+      // viewport. Siblings sharing a parent get a small staggered delay for a cascading feel.
+      const revealEls = Array.from(document.querySelectorAll<HTMLElement>(".reveal-on-scroll"));
+
+      if (revealEls.length > 0) {
+        const staggerGroups = new Map<Element | null, HTMLElement[]>();
+        revealEls.forEach((el) => {
+          const key = el.parentElement;
+          if (!staggerGroups.has(key)) staggerGroups.set(key, []);
+          staggerGroups.get(key)!.push(el);
+        });
+        staggerGroups.forEach((siblings) => {
+          siblings.forEach((el, i) => {
+            el.style.transitionDelay = `${Math.min(i, 6) * 70}ms`;
+          });
+        });
+
+        if ("IntersectionObserver" in window) {
+          const observer = new IntersectionObserver(
+            (entries, obs) => {
+              entries.forEach((entry) => {
+                if (entry.isIntersecting) {
+                  entry.target.classList.add("is-revealed");
+                  obs.unobserve(entry.target);
+                }
+              });
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -10% 0px" }
+          );
+          revealEls.forEach((el) => observer.observe(el));
+        } else {
+          revealEls.forEach((el) => el.classList.add("is-revealed"));
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,181 @@
+---
+import { project } from "@/data/project";
+const { pricing, unitTypes, content } = project;
+
+const isStartingPricePending = (pricing.indicativeStartingPrice as string) === "To be updated";
+const isPsfPending = (pricing.indicativePsfRange as string) === "To be updated";
+const isPriceDatePending = (pricing.priceLastUpdated as string) === "To be updated";
+
+const units = unitTypes.map((unit) => {
+  const areaPending = unit.approxAreaSqft === "To be updated";
+  const pricePending = unit.indicativePriceFrom === null;
+  const psfPending = unit.indicativePsf === null;
+  const availabilityPending = unit.availability === "Verify Availability";
+  const allPending = areaPending && pricePending && psfPending && availabilityPending;
+  return { unit, areaPending, pricePending, psfPending, availabilityPending, allPending };
+});
+---
+
+<section id="price" class="bg-surface">
+  <div class="container">
+    <div class="section-heading reveal-on-scroll">
+      <span class="section-eyebrow">Pricing</span>
+      <h2>Indicative Pricing</h2>
+      <p>{content.pricingAnalysis}</p>
+    </div>
+
+    <div class="price-summary grid-2">
+      <div class="card reveal-on-scroll">
+        <p class="price-label">Indicative Starting Price</p>
+        {isStartingPricePending ? (
+          <p class="price-pending">
+            <span class="price-pending-dot" aria-hidden="true"></span>
+            To be updated
+          </p>
+        ) : (
+          <p class="price-value">{pricing.indicativeStartingPrice}</p>
+        )}
+      </div>
+      <div class="card reveal-on-scroll">
+        <p class="price-label">Indicative PSF Range</p>
+        {isPsfPending ? (
+          <p class="price-pending">
+            <span class="price-pending-dot" aria-hidden="true"></span>
+            To be updated
+          </p>
+        ) : (
+          <p class="price-value">{pricing.indicativePsfRange}</p>
+        )}
+      </div>
+    </div>
+
+    <div class="unit-grid">
+      {units.map(({ unit, areaPending, pricePending, psfPending, availabilityPending, allPending }) => (
+        <div class="unit-card card reveal-on-scroll">
+          <div class="unit-card-header">
+            <h3>{unit.type}</h3>
+            {!availabilityPending && <span class="availability-badge">{unit.availability}</span>}
+          </div>
+
+          {allPending ? (
+            <p class="unit-pending">
+              <span class="price-pending-dot" aria-hidden="true"></span>
+              Details to be confirmed — request the latest price list
+            </p>
+          ) : (
+            <dl class="unit-stats">
+              {!areaPending && (
+                <div class="unit-stat">
+                  <dt>Area</dt>
+                  <dd>{unit.approxAreaSqft} sqft</dd>
+                </div>
+              )}
+              {!pricePending && (
+                <div class="unit-stat">
+                  <dt>Price from</dt>
+                  <dd>{unit.indicativePriceFrom}</dd>
+                </div>
+              )}
+              {!psfPending && (
+                <div class="unit-stat">
+                  <dt>PSF</dt>
+                  <dd>{unit.indicativePsf}</dd>
+                </div>
+              )}
+              {(areaPending || pricePending || psfPending) && (
+                <p class="unit-stats-note">Remaining details to be confirmed.</p>
+              )}
+            </dl>
+          )}
+        </div>
+      ))}
+    </div>
+
+    <p class="price-meta">
+      {isPriceDatePending ? "Pricing to be announced closer to preview" : `Price last updated: ${pricing.priceLastUpdated}`}
+    </p>
+    <p class="disclaimer-box">{pricing.disclaimer}</p>
+
+    <a href="#contact" class="btn btn-accent" data-track="request_price_list">Request Latest Price List</a>
+  </div>
+</section>
+
+<style>
+  .price-summary { margin-bottom: var(--space-8); }
+  .price-label { font-size: 0.85rem; color: var(--color-ink-soft); margin-bottom: var(--space-2); text-transform: uppercase; letter-spacing: 0.04em; }
+  .price-value { font-family: var(--font-display); font-size: 1.8rem; margin: 0; }
+
+  .price-pending {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--color-ink-soft);
+  }
+  .price-pending-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--color-accent);
+    flex-shrink: 0;
+  }
+
+  .unit-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+  @media (max-width: 640px) { .unit-grid { grid-template-columns: 1fr; } }
+
+  .unit-card { padding: var(--space-6); }
+  .unit-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+  .unit-card-header h3 { margin: 0; font-size: 1.05rem; }
+  .availability-badge {
+    flex-shrink: 0;
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-accent-strong);
+    background: color-mix(in srgb, var(--color-accent) 12%, transparent);
+    padding: 2px 10px;
+    border-radius: 999px;
+  }
+
+  .unit-pending {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin: 0;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--color-ink-soft);
+  }
+
+  .unit-stats { margin: 0; display: flex; flex-wrap: wrap; gap: var(--space-4); }
+  .unit-stat { min-width: 90px; }
+  .unit-stat dt { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.04em; color: var(--color-ink-soft); margin-bottom: 2px; }
+  .unit-stat dd { margin: 0; font-weight: 600; font-size: 0.95rem; }
+  .unit-stats-note { width: 100%; margin: var(--space-2) 0 0; font-size: 0.82rem; font-style: italic; color: var(--color-ink-soft); }
+
+  .price-meta { font-size: 0.85rem; color: var(--color-ink-soft); margin-bottom: var(--space-4); }
+  .disclaimer-box { margin-bottom: var(--space-6); }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-track="request_price_list"]').forEach((el) => {
+    el.addEventListener("click", () => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "request_price_list" });
+    });
+  });
+</script>

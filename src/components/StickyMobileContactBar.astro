@@ -1,0 +1,84 @@
+---
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+
+const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}?text=${encodeURIComponent(
+  project.contact.whatsappMessage
+)}`;
+---
+
+<div class="mobile-contact-bar" role="navigation" aria-label="Quick contact">
+  <a href={`tel:${agent.mobileNumber.replace(/\s/g, "")}`} class="bar-action" data-track="click_call">
+    <span aria-hidden="true">📞</span>
+    <span>Call</span>
+  </a>
+  <a
+    href={whatsappUrl}
+    class="bar-action"
+    target="_blank"
+    rel="noopener noreferrer"
+    data-track="click_whatsapp"
+  >
+    <span aria-hidden="true">💬</span>
+    <span>WhatsApp</span>
+  </a>
+  <a href="#contact" class="bar-action bar-action-primary" data-track="book_showflat">
+    <span>Book Showflat</span>
+  </a>
+</div>
+
+<style>
+  .mobile-contact-bar {
+    display: none;
+  }
+
+  @media (max-width: 1240px) {
+    .mobile-contact-bar {
+      display: flex;
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      z-index: 90;
+      background: var(--color-surface);
+      border-top: 1px solid var(--color-border);
+      box-shadow: var(--shadow-md);
+      padding: var(--space-2) var(--space-3);
+      padding-bottom: max(var(--space-2), env(safe-area-inset-bottom));
+      gap: var(--space-2);
+    }
+
+    .bar-action {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 2px;
+      text-decoration: none;
+      color: var(--color-ink);
+      font-size: 0.78rem;
+      font-weight: 600;
+      min-height: 48px;
+      border-radius: var(--radius-sm);
+    }
+
+    .bar-action span[aria-hidden] { font-size: 1.1rem; }
+
+    .bar-action-primary {
+      background: var(--color-accent);
+      color: var(--color-on-accent);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>("[data-track]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const eventName = el.dataset.track;
+      if (!eventName) return;
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: eventName });
+    });
+  });
+</script>

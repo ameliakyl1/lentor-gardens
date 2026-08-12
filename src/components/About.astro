@@ -1,0 +1,99 @@
+---
+import { project } from "@/data/project";
+const { general, content } = project;
+
+// Converts *emphasized* segments to <strong> for paragraphs with markup, escaping the rest.
+function renderEmphasis(text: string): string {
+  const escape = (s: string) =>
+    s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  return text
+    .split(/(\*[^*]+\*)/g)
+    .map((part) =>
+      part.startsWith("*") && part.endsWith("*")
+        ? `<strong>${escape(part.slice(1, -1))}</strong>`
+        : escape(part)
+    )
+    .join("");
+}
+
+const quickFacts = [
+  { label: "Developer", value: general.developerShortName },
+  { label: "Location", value: general.streetAddress },
+  { label: "District", value: general.district },
+  { label: "Tenure", value: general.tenure },
+  { label: "Total Units", value: general.numberOfUnits },
+  { label: "No. of Carpark Lots", value: `${general.numberOfCarparkLots} Lots` },
+  { label: "Unit Types", value: general.unitTypesSummary },
+  { label: "Expected TOP", value: general.expectedTOP },
+  { label: "Project Status", value: general.projectStatus },
+];
+---
+
+<section id="about" class="bg-surface">
+  <div class="container">
+    <div class="section-heading reveal-on-scroll">
+      <span class="section-eyebrow">About the Project</span>
+      <h2>About {general.projectName}</h2>
+    </div>
+
+    <div class="about-grid">
+      <div class="about-copy reveal-on-scroll">
+        {content.aboutOverview.split("\n\n").map((para) => <p set:html={renderEmphasis(para)} />)}
+      </div>
+
+      <aside class="quick-facts card reveal-on-scroll" aria-label="Quick facts">
+        <h3>{general.projectName} — Project Information</h3>
+        <dl>
+          {quickFacts.map((fact) => (
+            <div class="quick-fact-row">
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+        <p class="quick-facts-note">Facts shown are subject to final verification against official developer documents.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-grid { display: grid; grid-template-columns: 1.5fr 1fr; gap: var(--space-12); align-items: start; }
+  @media (max-width: 900px) { .about-grid { grid-template-columns: 1fr; } }
+
+  .quick-facts { padding: var(--space-6); }
+  .quick-facts h3 { margin-bottom: var(--space-6); line-height: 1.3; }
+
+  .quick-facts dl {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+    gap: var(--space-8) var(--space-6);
+    margin: 0;
+  }
+  .quick-fact-row {
+    border-left: 2px solid var(--color-border);
+    padding-left: var(--space-4);
+  }
+  .quick-fact-row dt {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    margin-bottom: var(--space-2);
+  }
+  .quick-fact-row dd {
+    margin: 0;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--color-ink);
+  }
+  .quick-facts-note {
+    font-size: 0.78rem;
+    color: var(--color-ink-soft);
+    margin: var(--space-6) 0 0;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+  }
+</style>

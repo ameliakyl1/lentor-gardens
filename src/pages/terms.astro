@@ -1,0 +1,77 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+---
+
+<BaseLayout
+  title={`Terms of Use | ${project.general.projectName}`}
+  description="Terms of Use for this independent property marketing website operated by Amelia Lek, Huttons Asia Pte Ltd."
+>
+  <Header />
+  <main id="main-content">
+    <section class="bg-surface legal-page">
+      <div class="container legal-content">
+        <h1>Terms of Use</h1>
+        <p class="disclaimer-box">
+          This page is a template and has not been reviewed by a lawyer. It must be reviewed
+          for legal sufficiency before this website is published.
+        </p>
+
+        <h2>Website operator</h2>
+        <p>
+          This website is operated by {agent.fullName} of {agent.estateAgencyName}. By using
+          this website, you agree to these Terms of Use.
+        </p>
+
+        <h2>Independent marketing website</h2>
+        <p>
+          This website is an independent marketing website for {project.general.projectName}. It
+          is not the official developer website and does not represent {project.general.developer}.
+        </p>
+
+        <h2>Information accuracy</h2>
+        <p>
+          Content on this website — including pricing, availability, floorplans, images and
+          location information — is provided for general reference and may be subject to
+          change without notice. See the <a href="/disclaimer">Disclaimer</a> for full details.
+        </p>
+
+        <h2>Intellectual property</h2>
+        <p>
+          Project renderings, floorplans, brochures and logos remain the property of their
+          respective owners (typically the developer) and are used with the understanding that
+          appropriate permission has been obtained or is being sought.
+        </p>
+
+        <h2>No professional or financial advice</h2>
+        <p>
+          Nothing on this website constitutes financial, investment or legal advice.
+          Prospective purchasers should seek independent professional advice before making any
+          purchase decision.
+        </p>
+
+        <h2>Limitation of liability</h2>
+        <p>
+          To the extent permitted by law, {agent.fullName} and {agent.estateAgencyName} are not
+          liable for any loss arising from reliance on information contained on this website.
+        </p>
+
+        <h2>Governing law</h2>
+        <p>These Terms of Use are governed by the laws of Singapore.</p>
+
+        <h2>Contact</h2>
+        <p>Questions about these terms may be directed to {agent.email}.</p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-page { padding-block: var(--space-16); }
+  .legal-content { max-width: 760px; }
+  .legal-content h2 { margin-top: var(--space-8); }
+</style>

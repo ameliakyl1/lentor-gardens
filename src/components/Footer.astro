@@ -1,0 +1,55 @@
+---
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="site-footer border-top">
+  <div class="container footer-grid">
+    <div>
+      <h3>Legal</h3>
+      <ul class="footer-links">
+        <li><a href="/privacy">Privacy Policy</a></li>
+        <li><a href="/terms">Terms of Use</a></li>
+        <li><a href="/disclaimer">Disclaimer</a></li>
+        <li><a href="/sitemap-index.xml">Sitemap</a></li>
+        <li><a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer">CEA Public Register</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h3>Disclosure</h3>
+      <p class="footer-meta">
+        This is an independent property marketing website operated by {agent.fullName}, a
+        CEA-registered salesperson with {agent.estateAgencyName}. It is not the official
+        developer website.
+      </p>
+      <p class="footer-meta">Information last updated: {project.general.lastUpdated}</p>
+    </div>
+  </div>
+
+  <div class="container footer-bottom">
+    <p>© {year} {agent.fullName}. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-stone);
+    padding-block: var(--space-8);
+    font-size: 0.9rem;
+  }
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-8);
+    margin-bottom: var(--space-8);
+  }
+  @media (max-width: 700px) {
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+  .footer-meta { color: var(--color-ink-soft); font-size: 0.88rem; }
+  .footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+  .footer-bottom { border-top: 1px solid var(--color-border); padding-top: var(--space-4); color: var(--color-ink-soft); font-size: 0.82rem; }
+</style>

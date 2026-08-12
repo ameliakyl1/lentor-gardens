@@ -1,0 +1,147 @@
+---
+import { project } from "@/data/project";
+const { media, content } = project;
+---
+
+<section id="gallery" class="bg-surface">
+  <div class="container">
+    <div class="section-heading reveal-on-scroll">
+      <span class="section-eyebrow">Gallery</span>
+      <h2>Project Gallery</h2>
+    </div>
+
+    <div class="gallery-grid">
+      {media.galleryImages.map((img, i) => (
+        <button type="button" class="gallery-item reveal-on-scroll" data-lightbox-trigger={i} aria-label={`View larger image: ${img.alt}`}>
+          <img
+            src={img.src}
+            alt={img.alt}
+            width={img.width}
+            height={img.height}
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="gallery-category">{img.category}</span>
+        </button>
+      ))}
+    </div>
+
+    <p class="disclaimer-box">{content.imageDisclaimer}</p>
+  </div>
+
+  <div class="lightbox" id="gallery-lightbox" role="dialog" aria-modal="true" aria-label="Image viewer" hidden>
+    <div class="lightbox-backdrop" data-lightbox-close></div>
+    <button type="button" class="lightbox-close" data-lightbox-close aria-label="Close image viewer">✕</button>
+    <button type="button" class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Previous image">‹</button>
+    <img id="lightbox-image" src="" alt="" />
+    <button type="button" class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Next image">›</button>
+  </div>
+</section>
+
+<style>
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+
+  .gallery-item {
+    position: relative;
+    padding: 0;
+    border: none;
+    background: none;
+    cursor: pointer;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    aspect-ratio: 4 / 3;
+  }
+  .gallery-item img { width: 100%; height: 100%; object-fit: cover; }
+  .gallery-category {
+    position: absolute;
+    bottom: var(--space-2);
+    left: var(--space-2);
+    background: rgba(14, 20, 15, 0.7);
+    color: #fff;
+    font-size: 0.72rem;
+    padding: 2px 8px;
+    border-radius: 999px;
+  }
+
+  .lightbox { position: fixed; inset: 0; z-index: 400; display: flex; align-items: center; justify-content: center; }
+  .lightbox[hidden] { display: none; }
+  .lightbox-backdrop { position: absolute; inset: 0; background: rgba(0, 0, 0, 0.9); }
+  .lightbox img { position: relative; max-width: 88vw; max-height: 82vh; object-fit: contain; }
+  .lightbox-close, .lightbox-nav {
+    position: absolute;
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+  .lightbox-close { top: var(--space-4); right: var(--space-4); width: 40px; height: 40px; }
+  .lightbox-nav { top: 50%; transform: translateY(-50%); width: 48px; height: 48px; font-size: 1.5rem; }
+  .lightbox-prev { left: var(--space-4); }
+  .lightbox-next { right: var(--space-4); }
+</style>
+
+<script>
+  import { project as projectData } from "@/data/project";
+
+  const images = projectData.media.galleryImages;
+  const items = document.querySelectorAll<HTMLButtonElement>("[data-lightbox-trigger]");
+  const lightbox = document.getElementById("gallery-lightbox");
+  const lightboxImage = document.getElementById("lightbox-image") as HTMLImageElement | null;
+  const prevBtn = document.getElementById("lightbox-prev");
+  const nextBtn = document.getElementById("lightbox-next");
+  let currentIndex = 0;
+  let lastFocused: HTMLElement | null = null;
+
+  function render() {
+    if (!lightboxImage) return;
+    const img = images[currentIndex];
+    lightboxImage.src = img.src;
+    lightboxImage.alt = img.alt;
+  }
+
+  function open(index: number) {
+    currentIndex = index;
+    lastFocused = document.activeElement as HTMLElement;
+    render();
+    if (lightbox) lightbox.hidden = false;
+    (document.querySelector(".lightbox-close") as HTMLElement | null)?.focus();
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "view_gallery" });
+  }
+
+  function close() {
+    if (lightbox) lightbox.hidden = true;
+    lastFocused?.focus();
+  }
+
+  items.forEach((item) => {
+    item.addEventListener("click", () => {
+      const idx = Number(item.dataset.lightboxTrigger);
+      open(idx);
+    });
+  });
+
+  document.querySelectorAll("[data-lightbox-close]").forEach((el) => el.addEventListener("click", close));
+
+  prevBtn?.addEventListener("click", () => {
+    currentIndex = (currentIndex - 1 + images.length) % images.length;
+    render();
+  });
+  nextBtn?.addEventListener("click", () => {
+    currentIndex = (currentIndex + 1) % images.length;
+    render();
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (lightbox?.hidden) return;
+    if (e.key === "Escape") close();
+    if (e.key === "ArrowLeft") prevBtn?.click();
+    if (e.key === "ArrowRight") nextBtn?.click();
+  });
+</script>

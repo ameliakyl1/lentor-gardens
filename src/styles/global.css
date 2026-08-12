@@ -1,0 +1,387 @@
+/* ==========================================================================
+   Design tokens
+   Three themes share structure, spacing rhythm and accessibility standard;
+   they differ only in accent colour, type pairing and a few surface treatments.
+   Switch themes by setting data-theme on <html> (see src/data/site.ts -> activeTheme,
+   wired up in BaseLayout.astro).
+   ========================================================================== */
+
+:root {
+  /* Base palette — from the actual Lentor Gardens Residences logo lockup (the dark-green
+     roundel with gold wordmark stamped on the development's own site plan/location artwork),
+     not the architect briefing deck's internal PowerPoint template (which uses an unrelated
+     navy title bar). Default theme (urban-editorial) uses this Forest Green & Gold combination
+     directly; the other three theme variants below recolour around the same deep-green ink
+     using accents lifted from the landscape mood board (teal water) and material board
+     (terracotta stone) elsewhere in the briefing. */
+  --color-bg: #f5f4ee; /* neutral stone / porcelain */
+  --color-surface: #ffffff;
+  --color-stone: #e6e8dc; /* soft stone with a green undertone, for large section fills */
+  --color-ink: #16221a; /* deep forest-green-black, tuned for body-text contrast */
+  --color-ink-soft: #4f5c52;
+  --color-border: #d7dcd0;
+  --color-accent: #7a5d2d; /* logo wordmark gold, deepened for 4.5:1 text contrast */
+  --color-accent-strong: #5d4622;
+  --color-on-accent: #ffffff; /* text/icon colour placed on top of --color-accent */
+  --color-focus: #1c3923; /* the logo roundel's forest green */
+  --color-brand: #1c3923; /* logo roundel's forest green, as a surface (header, nav) */
+  --color-on-brand: #f5f4ee; /* text/logo colour placed on top of --color-brand */
+  --color-on-brand-accent: #d6b37a; /* lighter gold for hover/active states on --color-brand (the deepened --color-accent is too dark against it) */
+  --color-success: #3f6b4b;
+  --color-error: #7a3b3b;
+
+  --font-display: "Domine", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
+  --font-sans: "Sora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+
+  --radius-sm: 2px;
+  --radius-md: 4px;
+  --container-max: 1200px;
+  --content-max: 68ch;
+
+  --shadow-sm: 0 1px 2px rgba(33, 31, 28, 0.06);
+  --shadow-md: 0 8px 24px rgba(33, 31, 28, 0.08);
+
+  --nav-height: 100px;
+  --mobile-bar-height: 64px;
+}
+
+/* Teal variant, lifted from the landscape mood board's elevated-pool water tone */
+:root[data-theme="garden-contemporary"] {
+  --color-bg: #f6f4ee;
+  --color-stone: #cfe3df;
+  --color-accent: #2f6b63;
+  --color-accent-strong: #1f4a44;
+  --color-on-accent: #ffffff;
+  --color-focus: #7a5d2d;
+  --color-brand: #2f6b63;
+  --color-on-brand: #ffffff;
+  --color-on-brand-accent: #ffffff;
+  --font-display: "Domine", Georgia, serif;
+}
+
+/* Forest-forward variant — the logo roundel's deep green promoted to the accent role */
+:root[data-theme="coastal-minimal"] {
+  --color-bg: #f5f4ee;
+  --color-stone: #dde3d5;
+  --color-accent: #1c3923;
+  --color-accent-strong: #142a1a;
+  --color-on-accent: #ffffff;
+  --color-focus: #7a5d2d;
+  --color-brand: #1c3923;
+  --color-on-brand: #f5f4ee;
+  --color-on-brand-accent: #d6b37a;
+  --font-display: "Domine", Georgia, serif;
+}
+
+/* Terracotta variant, lifted from the interior material board's warm stone closeups */
+:root[data-theme="heritage-blush"] {
+  --color-bg: #f5f4ee;
+  --color-stone: #ead9c8;
+  --color-border: #ddcab5;
+  --color-accent: #9c5b3c;
+  --color-accent-strong: #7a4530;
+  --color-on-accent: #ffffff;
+  --color-focus: #1c3923;
+  --color-brand: #9c5b3c;
+  --color-on-brand: #ffffff;
+  --color-on-brand-accent: #ffffff;
+  --font-display: "Domine", Georgia, serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg: #10160f;
+    --color-surface: #17251a;
+    --color-stone: #1e2f22;
+    --color-ink: #f2f0e8;
+    --color-ink-soft: #c3ccc5;
+    --color-border: #33452f;
+    --color-accent: #d6b37a;
+    --color-accent-strong: #e8c896;
+    --color-on-accent: #10160f;
+    --color-focus: #7fae86;
+    --color-brand: #142a1a;
+    --color-on-brand: #f2f0e8;
+    --color-on-brand-accent: #d6b37a;
+    --shadow-sm: 0 1px 2px rgba(4, 8, 4, 0.35);
+    --shadow-md: 0 8px 24px rgba(4, 8, 4, 0.4);
+  }
+}
+
+/* ==========================================================================
+   Reset & base
+   ========================================================================== */
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: calc(var(--nav-height) + var(--space-4)); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.001ms !important; animation-iteration-count: 1 !important; transition-duration: 0.001ms !important; }
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { max-width: 100%; display: block; }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  color: var(--color-ink);
+  margin: 0 0 var(--space-4);
+  font-weight: 400;
+}
+
+h1 { font-size: clamp(2.25rem, 4vw + 1rem, 3.75rem); letter-spacing: -0.01em; }
+h2 { font-size: clamp(1.75rem, 2.5vw + 1rem, 2.5rem); letter-spacing: -0.01em; }
+h3 { font-size: clamp(1.25rem, 1.5vw + 1rem, 1.5rem); }
+
+p { margin: 0 0 var(--space-4); max-width: var(--content-max); }
+
+a { color: var(--color-accent-strong); }
+
+.container {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: var(--space-6);
+}
+
+section { padding-block: var(--space-24); }
+@media (max-width: 640px) {
+  section { padding-block: var(--space-16); }
+  .container { padding-inline: var(--space-4); }
+}
+
+@media (max-width: 1240px) {
+  body { padding-bottom: calc(var(--mobile-bar-height) + env(safe-area-inset-bottom)); }
+}
+
+.section-eyebrow {
+  font-family: var(--font-sans);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  font-size: 0.75rem;
+  color: var(--color-accent-strong);
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+.section-heading { margin-bottom: var(--space-8); }
+.section-heading p { color: var(--color-ink-soft); }
+
+.bg-stone { background: var(--color-stone); }
+.bg-surface { background: var(--color-surface); }
+
+.border-top { border-top: 1px solid var(--color-border); }
+.border-bottom { border-bottom: 1px solid var(--color-border); }
+
+/* ==========================================================================
+   Scroll reveal ("lazy scroll") — content below the fold fades and lifts
+   into place as it enters the viewport. Applied via JS (see BaseLayout.astro)
+   adding .is-revealed to .reveal-on-scroll elements; degrades to always-visible
+   without JS or with reduced motion.
+   ========================================================================== */
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 700ms cubic-bezier(0.16, 1, 0.3, 1), transform 700ms cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+.reveal-on-scroll.is-revealed {
+  opacity: 1;
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-on-scroll {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
+
+/* ==========================================================================
+   Focus & accessibility
+   ========================================================================== */
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  background: var(--color-ink);
+  color: var(--color-bg);
+  padding: var(--space-3) var(--space-4);
+  z-index: 1000;
+}
+.skip-link:focus { left: var(--space-4); top: var(--space-4); }
+
+.visually-hidden {
+  position: absolute;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden;
+  clip: rect(0,0,0,0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ==========================================================================
+   Buttons
+   ========================================================================== */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: 0.95rem;
+  padding: 0.85rem 1.5rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  min-height: 44px;
+  transition: background-color 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+
+.btn-primary { background: var(--color-ink); color: var(--color-bg); }
+.btn-primary:hover { background: var(--color-accent-strong); }
+
+.btn-accent { background: var(--color-accent); color: var(--color-on-accent); }
+.btn-accent:hover { background: var(--color-accent-strong); }
+
+.btn-secondary { background: transparent; color: var(--color-ink); border-color: var(--color-ink); }
+.btn-secondary:hover { background: var(--color-ink); color: var(--color-bg); }
+
+/* Solid on-brand fill for secondary CTAs placed over photography (e.g. hero WhatsApp button) —
+   more prominent than a transparent outline while staying on-theme (cream + forest green,
+   gold on hover) alongside the gold .btn-accent primary CTA. */
+.btn-outline-light { background: var(--color-on-brand); color: var(--color-brand); border-color: var(--color-on-brand); }
+.btn-outline-light:hover { background: var(--color-on-brand-accent); border-color: var(--color-on-brand-accent); }
+
+.btn-block { width: 100%; }
+
+/* ==========================================================================
+   Cards
+   ========================================================================== */
+
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-6);
+}
+
+/* ==========================================================================
+   Forms
+   ========================================================================== */
+
+.form-field { margin-bottom: var(--space-4); }
+.form-label { display: block; font-weight: 600; margin-bottom: var(--space-2); font-size: 0.95rem; }
+.form-hint { font-size: 0.85rem; color: var(--color-ink-soft); margin-top: var(--space-1); }
+.form-error { font-size: 0.85rem; color: var(--color-error); margin-top: var(--space-1); }
+
+.form-input, .form-select, .form-textarea {
+  width: 100%;
+  font: inherit;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  background: var(--color-surface);
+  color: var(--color-ink);
+  min-height: 44px;
+}
+.form-textarea { min-height: 100px; resize: vertical; }
+.form-input[aria-invalid="true"], .form-select[aria-invalid="true"], .form-textarea[aria-invalid="true"] {
+  border-color: var(--color-error);
+}
+
+.checkbox-field { display: flex; gap: var(--space-3); align-items: flex-start; margin-bottom: var(--space-4); }
+.checkbox-field input { margin-top: 0.3rem; width: 20px; height: 20px; flex-shrink: 0; }
+
+.honeypot-field { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+
+/* Shared filter-chip pattern (Floorplans, Location) */
+.filter-bar { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-8); }
+.filter-chip {
+  font: inherit;
+  font-size: 0.85rem;
+  padding: var(--space-2) var(--space-4);
+  border-radius: 999px;
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  cursor: pointer;
+  min-height: 40px;
+}
+.filter-chip.is-active { background: var(--color-ink); color: var(--color-bg); border-color: var(--color-ink); }
+
+/* Website-wide utility grids */
+.grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-8); }
+.grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
+.grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); }
+@media (max-width: 900px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 640px) {
+  .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+}
+
+.disclaimer-box {
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4) var(--space-6);
+  font-size: 0.9rem;
+  color: var(--color-ink-soft);
+}
+
+.disclosure-banner {
+  background: var(--color-ink);
+  color: var(--color-bg);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: var(--space-2) var(--space-4);
+  line-height: 1.5;
+}
+.disclosure-banner a { color: var(--color-bg); text-decoration: underline; }
+
+table.data-table { width: 100%; border-collapse: collapse; }
+table.data-table th, table.data-table td {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+table.data-table th { font-family: var(--font-sans); font-weight: 600; color: var(--color-ink-soft); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.06em; }
+
+@media (max-width: 640px) {
+  table.data-table, table.data-table thead, table.data-table tbody, table.data-table tr, table.data-table td { display: block; width: 100%; }
+  table.data-table thead { display: none; }
+  table.data-table tr { border-bottom: 1px solid var(--color-border); padding: var(--space-3) 0; }
+  table.data-table td { border: none; padding: var(--space-1) 0; }
+  table.data-table td::before { content: attr(data-label); font-weight: 600; display: block; font-size: 0.75rem; color: var(--color-ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+}

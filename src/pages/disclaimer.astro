@@ -1,0 +1,50 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+---
+
+<BaseLayout
+  title={`Disclaimer | ${project.general.projectName}`}
+  description="Project disclaimer covering pricing, availability, images and general information accuracy."
+>
+  <Header />
+  <main id="main-content">
+    <section class="bg-surface legal-page">
+      <div class="container legal-content">
+        <h1>Disclaimer</h1>
+
+        <p>{project.content.projectDisclaimer}</p>
+
+        <ul class="disclaimer-list">
+          <li>Information is provided for general reference only.</li>
+          <li>Information may be subject to change without notice.</li>
+          <li>Prices and availability must be reconfirmed directly with the developer or its authorised marketing agents.</li>
+          <li>Images and renderings may be artists' impressions and may not represent the final development.</li>
+          <li>Floor areas and dimensions are approximate and subject to final survey.</li>
+          <li>This information does not form part of, and shall not be regarded as, an offer or contract.</li>
+          <li>Buyers should refer to the Option to Purchase, Sale and Purchase Agreement and other official sale documents.</li>
+          <li>Errors and omissions excepted.</li>
+        </ul>
+
+        <h2>Independent marketing website</h2>
+        <p>
+          This is an independent property marketing website operated by {agent.fullName}, a
+          CEA-registered salesperson with {agent.estateAgencyName}. It is not the official
+          developer website, and {agent.fullName} is not represented as the exclusive
+          salesperson or agency for {project.general.projectName} unless expressly stated with
+          supporting authorisation.
+        </p>
+      </div>
+    </section>
+  </main>
+  <Footer />
+</BaseLayout>
+
+<style>
+  .legal-page { padding-block: var(--space-16); }
+  .legal-content { max-width: 760px; }
+  .disclaimer-list { color: var(--color-ink-soft); }
+</style>

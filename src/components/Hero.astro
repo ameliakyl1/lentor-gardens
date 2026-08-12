@@ -1,0 +1,103 @@
+---
+import { project } from "@/data/project";
+import { agent } from "@/data/agent";
+
+const { general, content, media } = project;
+
+const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}?text=${encodeURIComponent(
+  project.contact.whatsappMessage
+)}`;
+---
+
+<section class="hero" id="top">
+  <picture>
+    <source media="(max-width: 700px)" srcset={media.heroImage.mobileSrc} />
+    <img
+      src={media.heroImage.src}
+      alt={media.heroImage.alt}
+      width={media.heroImage.width}
+      height={media.heroImage.height}
+      class="hero-image"
+      fetchpriority="high"
+      loading="eager"
+      decoding="async"
+    />
+  </picture>
+
+  <div class="hero-scrim" aria-hidden="true"></div>
+
+  <div class="container hero-content">
+    <h1 class="hero-heading">{content.heroHeadline}</h1>
+
+    <ul class="hero-facts">
+      <li><strong>District:</strong> {general.districtShort}</li>
+      <li><strong>Area:</strong> {general.region}</li>
+      <li><strong>Tenure:</strong> {general.tenure}</li>
+    </ul>
+
+    <div class="hero-ctas">
+      <a href="#contact" class="btn btn-accent" data-track="book_showflat">Book Showflat</a>
+      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn-outline-light" data-track="click_whatsapp">
+        WhatsApp Us
+      </a>
+    </div>
+
+    <p class="hero-updated">Information last updated: {general.lastUpdated}</p>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 88vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+  }
+  .hero-image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .hero-scrim {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(14, 20, 15, 0.15) 0%, rgba(14, 20, 15, 0.75) 100%);
+  }
+  .hero-content {
+    position: relative;
+    color: #fff;
+    padding-block: var(--space-16) var(--space-16);
+    max-width: 760px;
+  }
+  .hero-heading { color: #fff; margin-bottom: var(--space-4); }
+  .hero-facts {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2) var(--space-6);
+    padding: 0;
+    margin: 0 0 var(--space-8);
+    font-size: 0.92rem;
+  }
+  .hero-ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
+  .hero-updated { font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin: 0; }
+
+  @media (max-width: 640px) {
+    .hero { min-height: 92vh; }
+    .hero-content { padding-block: var(--space-8); }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLAnchorElement>(".hero-ctas [data-track]").forEach((el) => {
+    el.addEventListener("click", () => {
+      const eventName = el.dataset.track;
+      if (!eventName) return;
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: eventName });
+    });
+  });
+</script>

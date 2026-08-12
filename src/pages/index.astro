@@ -1,0 +1,47 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Hero from "@/components/Hero.astro";
+import About from "@/components/About.astro";
+import Location from "@/components/Location.astro";
+import Price from "@/components/Price.astro";
+import Floorplans from "@/components/Floorplans.astro";
+import Brochure from "@/components/Brochure.astro";
+import Gallery from "@/components/Gallery.astro";
+import Developer from "@/components/Developer.astro";
+import Faq from "@/components/Faq.astro";
+import Contact from "@/components/Contact.astro";
+import Footer from "@/components/Footer.astro";
+import StickyMobileContactBar from "@/components/StickyMobileContactBar.astro";
+import ConsentNotice from "@/components/ConsentNotice.astro";
+import { project } from "@/data/project";
+import { buildRealEstateAgentSchema, buildFaqSchema } from "@/utils/structuredData";
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
+const title = "Lentor Gardens Residences | New Condo Next to Lentor MRT";
+const description =
+  "Lentor Gardens Residences — 499-unit 99-yr leasehold condo near Lentor MRT & Lentor Modern Mall. 2-4 bedders & strata terraces from $2,050 psf.";
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  structuredData={[buildRealEstateAgentSchema(canonicalUrl), buildFaqSchema()]}
+>
+  <Header />
+  <main id="main-content">
+    <Hero />
+    <About />
+    <Location />
+    <Price />
+    <Floorplans />
+    <Brochure />
+    <Gallery />
+    <Developer />
+    <Faq />
+    <Contact />
+  </main>
+  <Footer />
+  <StickyMobileContactBar />
+  <ConsentNotice />
+</BaseLayout>
