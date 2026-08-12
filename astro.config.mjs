@@ -7,7 +7,7 @@ import cloudflare from "@astrojs/cloudflare";
 // src/pages/api/enquiry.ts, which opts into on-demand rendering via `export const prerender = false`
 // so it can run server-side validation and lead delivery as a Cloudflare Pages Function.
 export default defineConfig({
-  site: "https://example-new-launch.pages.dev",
+  site: "https://lentorgardensresidences-condo.com",
   integrations: [sitemap()],
   output: "hybrid",
   adapter: cloudflare({ imageService: "compile" }),
