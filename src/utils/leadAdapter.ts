@@ -39,21 +39,27 @@ export type LeadPayload = {
 
 export type LeadDeliveryResult = { delivered: boolean; mode: "crm" | "console-log"; error?: string };
 
-export async function deliverLead(lead: LeadPayload): Promise<LeadDeliveryResult> {
-  const webhookUrl = process.env.CRM_WEBHOOK_URL;
+export async function deliverLead(
+  lead: LeadPayload,
+  env: Record<string, string | undefined>
+): Promise<LeadDeliveryResult> {
+  const webhookUrl = env.CRM_WEBHOOK_URL;
 
   if (webhookUrl) {
     try {
-      const response = await fetch(webhookUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          ...(process.env.CRM_WEBHOOK_SECRET
-            ? { Authorization: `Bearer ${process.env.CRM_WEBHOOK_SECRET}` }
-            : {}),
-        },
-        body: JSON.stringify(lead),
-      });
+      const headers = {
+        "Content-Type": "application/json",
+        ...(env.CRM_WEBHOOK_SECRET ? { Authorization: `Bearer ${env.CRM_WEBHOOK_SECRET}` } : {}),
+      };
+      const body = JSON.stringify(lead);
+
+      // Some webhook targets (notably Google Apps Script) execute the request synchronously
+      // on this initial POST, then reply with a 302 to a one-time content URL holding the
+      // response body. That redirect target only accepts GET, so we let fetch()'s default
+      // "follow" redirect mode handle it (which auto-downgrades the follow-up to GET per the
+      // Fetch spec) rather than forcing POST, which the target would reject with 405.
+      const response = await fetch(webhookUrl, { method: "POST", headers, body });
+
       if (!response.ok) {
         return { delivered: false, mode: "crm", error: `CRM webhook responded with ${response.status}` };
       }

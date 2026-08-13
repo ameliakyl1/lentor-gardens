@@ -7,8 +7,34 @@ import { deliverLead, type LeadPayload } from "@/utils/leadAdapter";
 export const prerender = false;
 
 type RequestBody = EnquiryFormData & {
+  turnstileToken?: string;
   attribution?: Partial<LeadPayload["attribution"]>;
 };
+
+async function verifyTurnstile(
+  token: string,
+  ip: string,
+  env: Record<string, string | undefined>
+): Promise<boolean> {
+  const secretKey = env.TURNSTILE_SECRET_KEY;
+  if (!secretKey) return true; // Not configured — skip verification rather than block all submissions.
+
+  const formData = new FormData();
+  formData.append("secret", secretKey);
+  formData.append("response", token);
+  formData.append("remoteip", ip);
+
+  try {
+    const response = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
+      method: "POST",
+      body: formData,
+    });
+    const result = (await response.json()) as { success: boolean };
+    return result.success === true;
+  } catch {
+    return false;
+  }
+}
 
 // Simple in-memory rate limiting per server instance. On serverless platforms each
 // instance has its own memory, so this is a best-effort guard, not a hard limit — for
@@ -16,9 +42,9 @@ type RequestBody = EnquiryFormData & {
 // See FORM_RATE_LIMIT_WINDOW_SECONDS / FORM_RATE_LIMIT_MAX_SUBMISSIONS in .env.example.
 const submissionLog = new Map<string, number[]>();
 
-function isRateLimited(ip: string): boolean {
-  const windowMs = Number(process.env.FORM_RATE_LIMIT_WINDOW_SECONDS ?? 60) * 1000;
-  const maxSubmissions = Number(process.env.FORM_RATE_LIMIT_MAX_SUBMISSIONS ?? 3);
+function isRateLimited(ip: string, env: Record<string, string | undefined>): boolean {
+  const windowMs = Number(env.FORM_RATE_LIMIT_WINDOW_SECONDS ?? 60) * 1000;
+  const maxSubmissions = Number(env.FORM_RATE_LIMIT_MAX_SUBMISSIONS ?? 3);
   const now = Date.now();
   const timestamps = (submissionLog.get(ip) ?? []).filter((t) => now - t < windowMs);
   timestamps.push(now);
@@ -26,7 +52,16 @@ function isRateLimited(ip: string): boolean {
   return timestamps.length > maxSubmissions;
 }
 
-export const POST: APIRoute = async ({ request, clientAddress }) => {
+// Cloudflare Pages Functions expose secrets/vars via the request-scoped `locals.runtime.env`
+// binding, not Node's `process.env` (which is empty at runtime on Workers). Falling back to
+// `process.env` keeps this working under plain `astro dev` (no Cloudflare runtime present).
+function getEnv(locals: App.Locals): Record<string, string | undefined> {
+  const runtimeEnv = (locals as { runtime?: { env?: Record<string, string | undefined> } }).runtime?.env;
+  return runtimeEnv ?? (process.env as Record<string, string | undefined>);
+}
+
+export const POST: APIRoute = async ({ request, clientAddress, locals }) => {
+  const env = getEnv(locals);
   let body: RequestBody;
   try {
     body = await request.json();
@@ -34,7 +69,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     return new Response(JSON.stringify({ error: "Invalid request body" }), { status: 400 });
   }
 
-  if (isRateLimited(clientAddress ?? "unknown")) {
+  if (isRateLimited(clientAddress ?? "unknown", env)) {
     return new Response(JSON.stringify({ error: "Too many submissions. Please try again shortly." }), {
       status: 429,
     });
@@ -47,6 +82,11 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   }
   if (Object.keys(errors).length > 0) {
     return new Response(JSON.stringify({ error: "Validation failed", fields: errors }), { status: 422 });
+  }
+
+  const turnstileOk = await verifyTurnstile(body.turnstileToken ?? "", clientAddress ?? "unknown", env);
+  if (!turnstileOk) {
+    return new Response(JSON.stringify({ error: "Verification failed. Please try again." }), { status: 403 });
   }
 
   const lead: LeadPayload = {
@@ -76,9 +116,10 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     submittedAt: new Date().toISOString(),
   };
 
-  const result = await deliverLead(lead);
+  const result = await deliverLead(lead, env);
 
   if (!result.delivered) {
+    console.error("[enquiry] Lead delivery failed:", result.mode, result.error);
     return new Response(JSON.stringify({ error: "Lead delivery failed" }), { status: 502 });
   }
 

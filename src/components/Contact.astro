@@ -7,6 +7,8 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
 )}`;
 ---
 
+<script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+
 <section id="contact" class="bg-surface">
   <div class="container contact-grid">
     <div class="contact-intro reveal-on-scroll">
@@ -94,6 +96,13 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
       <div class="honeypot-field" aria-hidden="true">
         <label for="companyWebsite">Leave this field blank</label>
         <input type="text" id="companyWebsite" name="companyWebsite" tabindex="-1" autocomplete="off" />
+      </div>
+
+      <div
+        class="cf-turnstile"
+        data-sitekey={import.meta.env.PUBLIC_TURNSTILE_SITE_KEY}
+        data-theme="light"
+      >
       </div>
 
       <div class="checkbox-field">
@@ -209,6 +218,7 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
     );
 
     const errors = validateEnquiry(data);
+    const turnstileToken = String(formData.get("cf-turnstile-response") ?? "");
     if (Object.keys(errors).length > 0 && !errors.honeypot) {
       Object.entries(errors).forEach(([field, message]) => showFieldError(field, message));
       if (statusEl) {
@@ -217,6 +227,14 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
       }
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: "form_error" });
+      return;
+    }
+
+    if (!turnstileToken && !errors.honeypot) {
+      if (statusEl) {
+        statusEl.dataset.state = "error";
+        statusEl.textContent = "Please complete the verification checkbox before submitting.";
+      }
       return;
     }
 
@@ -231,7 +249,7 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
       const response = await fetch("/api/enquiry", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...data, attribution: getAttribution() }),
+        body: JSON.stringify({ ...data, turnstileToken, attribution: getAttribution() }),
       });
 
       if (errors.honeypot) {
@@ -252,10 +270,17 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
         statusEl.textContent =
           "Something went wrong sending your enquiry. Please try again, or contact Amelia directly by phone or WhatsApp.";
       }
+      window.turnstile?.reset();
       submitBtn.disabled = false;
       submitLabel.textContent = "Submit Enquiry";
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({ event: "form_error" });
     }
   });
+
+  declare global {
+    interface Window {
+      turnstile?: { reset: (widgetId?: string) => void };
+    }
+  }
 </script>
