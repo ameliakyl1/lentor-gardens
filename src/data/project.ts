@@ -214,7 +214,7 @@ export const project = {
   content: {
     heroHeadline: "Lentor Gardens Residences",
     heroSupportingCopy:
-      "A 499-unit 99-year leasehold condo along Lentor Gardens, within walking distance of Lentor MRT and Lentor Modern Mall. 2 to 4-bedroom apartments and 3 strata terraces, indicatively priced from $2,050 psf. Book a private showflat appointment with Amelia Lek.",
+      "A 499-unit 99-year leasehold condo along Lentor Gardens, within walking distance of Lentor MRT and Lentor Modern Mall. 2 to 4-bedroom apartments and 3 strata terraces, indicatively priced from $2,050 psf. Book a private showflat appointment with Amelia Lek Kai Yi.",
     aboutOverview:
       "*Lentor Gardens Residences* is the newest addition to the Lentor estate, located along Lentor Gardens and within walking distance to *Lentor MRT* and *Lentor Modern Mall*. Developed by *Kingsford Lentor Project Pte Ltd* (part of the Kingsford Group; Huttons Asia Pte Ltd's marketing appointment for this project was confirmed by *Kingsford Huray Development Pte. Ltd.* on behalf of itself and its respective subsidiaries), this 99-year leasehold condominium offers 499 residential units across a mix of 2 to 4-bedroom apartments and 3 strata terraces.\n\nLaunched on 4 July 2026, Lentor Gardens Residences offers connectivity via the Thomson-East Coast Line, proximity to Lentor Modern Mall, and a unit mix that includes larger, family-sized layouts. Units are indicatively priced from *$2,050 psf*.",
     locationAnalysis:

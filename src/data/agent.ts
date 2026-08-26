@@ -4,7 +4,7 @@
 
 export const agent = {
   fullName: "Amelia Lek Kai Yi",
-  displayName: "Amelia Lek",
+  displayName: "Amelia Lek Kai Yi",
   ceaRegistrationNumber: "R072094A",
   estateAgencyName: "Huttons Asia Pte Ltd",
   estateAgencyLicenceNumber: "L3008899K",
