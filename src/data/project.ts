@@ -29,7 +29,15 @@ export const project = {
     postalCode: "788797–788843 (varies by block)",
     tenure: "99 Years (w.e.f. 7 July 2025)",
     developer: "Kingsford Lentor Project Pte Ltd",
-    developerShortName: "Kingsford Lentor",
+    developerShortName: "Kingsford Lentor Project Pte Ltd",
+    // The project's licensed developer (HDB Housing Developer's Licence No. C1550) is Kingsford
+    // Lentor Project Pte Ltd, a subsidiary within the Kingsford Group. Huttons Asia's marketing
+    // appointment for this project was confirmed in writing by Kingsford Huray Development Pte.
+    // Ltd. "on behalf of Kingsford Huray Development Pte. Ltd. and its respective subsidiaries" —
+    // both names refer to the same corporate group and must appear together (not as alternates)
+    // anywhere the appointment/authorisation is described, so a reviewer can reconcile the two
+    // against the signed letter rather than seeing what looks like a name mismatch.
+    developerAppointingEntity: "Kingsford Huray Development Pte. Ltd.",
     architect: "[ARCHITECT — VERIFY]",
     mainContractor: "[MAIN CONTRACTOR — VERIFY]",
     numberOfUnits: "502 in total — 499 residential units (including 3 strata terraces) plus 3 shops",
@@ -44,14 +52,14 @@ export const project = {
     previewDate: "[PREVIEW DATE — VERIFY]",
     bookingDate: "[BOOKING DATE — VERIFY]",
     showflatAddress: "[SHOWFLAT ADDRESS — VERIFY]",
-    lastUpdated: "7 August 2026",
+    lastUpdated: "13 August 2026",
   },
 
   pricing: {
     indicativeStartingPrice: "To be updated",
     indicativePsfRange: "From $2,050 psf",
     maintenanceFeeEstimate: "To be updated",
-    priceLastUpdated: "7 August 2026",
+    priceLastUpdated: "13 August 2026",
     priceListDocument: "/documents/price-list-placeholder.pdf",
     disclaimer:
       "Prices, unit availability and promotional arrangements are indicative and subject to change. Please request the latest developer-issued price list for confirmation.",
@@ -130,7 +138,7 @@ export const project = {
 
   location: {
     overview:
-      "Lentor Gardens Residences is located at 66–78 Lentor Gardens in District 26 (Mandai / Upper Thomson), within the Lentor estate — a cluster of new launches (including Lentoria, Lentor Mansion, Lentor Hills, Hillock Green and Lentor Central) surrounding Lentor MRT (TE5) on the Thomson-East Coast Line, connected via Hillock Park.",
+      "Lentor Gardens Residences is located at 66–80 Lentor Gardens in District 26 (Mandai / Upper Thomson), within the Lentor estate — a cluster of new launches (including Lentoria, Lentor Mansion, Lentor Hills, Hillock Green and Lentor Central) surrounding Lentor MRT (TE5) on the Thomson-East Coast Line, connected via Hillock Park.",
     nearestMrtStations: [
       { name: "Lentor MRT", line: "TE5", walkingMinutes: "2 mins" },
     ],
@@ -180,7 +188,9 @@ export const project = {
   },
 
   media: {
-    projectLogo: { src: "/images/branding/project-logo.png", alt: "Lentor Gardens Residences logo", width: 700, height: 495 },
+    // projectLogo intentionally removed — the header now carries the agent's own name and CEA
+    // registration instead of a project wordmark, so no third-party brand mark ships anywhere
+    // on this site. See the comment in src/components/Developer.astro.
     heroImage: {
       src: "/images/hero/hero-desktop.jpg",
       mobileSrc: "/images/hero/hero-mobile.jpg",
@@ -198,7 +208,7 @@ export const project = {
     sitePlan: { src: "/images/site-plan/site-plan.jpg", alt: "Lentor Gardens Residences site plan", width: 1400, height: 980 },
     brochureCover: { src: "/images/brochure/brochure-cover.jpg", alt: "Lentor Gardens Residences project brochure cover", width: 1200, height: 900 },
     brochurePdf: null as string | null, // set to a verified, authorised PDF path/URL when available
-    developerLogo: { src: "/images/branding/developer-logo.png", alt: "Kingsford Lentor Project Pte Ltd logo", width: 700, height: 131 },
+    // developerLogo intentionally removed — see the comment in src/components/Developer.astro.
   },
 
   content: {
@@ -206,7 +216,7 @@ export const project = {
     heroSupportingCopy:
       "A 499-unit 99-year leasehold condo along Lentor Gardens, within walking distance of Lentor MRT and Lentor Modern Mall. 2 to 4-bedroom apartments and 3 strata terraces, indicatively priced from $2,050 psf. Book a private showflat appointment with Amelia Lek.",
     aboutOverview:
-      "*Lentor Gardens Residences* is the newest addition to the Lentor estate, located along Lentor Gardens and within walking distance to *Lentor MRT* and *Lentor Modern Mall*. Developed by *Kingsford Lentor Project Pte Ltd*, part of the Kingsford Group, this 99-year leasehold condominium offers 499 residential units across a mix of 2 to 4-bedroom apartments and 3 strata terraces.\n\nLaunched on 4 July 2026, Lentor Gardens Residences offers connectivity via the Thomson-East Coast Line, proximity to Lentor Modern Mall, and a unit mix that includes larger, family-sized layouts. Units are indicatively priced from *$2,050 psf*.",
+      "*Lentor Gardens Residences* is the newest addition to the Lentor estate, located along Lentor Gardens and within walking distance to *Lentor MRT* and *Lentor Modern Mall*. Developed by *Kingsford Lentor Project Pte Ltd* (part of the Kingsford Group; Huttons Asia Pte Ltd's marketing appointment for this project was confirmed by *Kingsford Huray Development Pte. Ltd.* on behalf of itself and its respective subsidiaries), this 99-year leasehold condominium offers 499 residential units across a mix of 2 to 4-bedroom apartments and 3 strata terraces.\n\nLaunched on 4 July 2026, Lentor Gardens Residences offers connectivity via the Thomson-East Coast Line, proximity to Lentor Modern Mall, and a unit mix that includes larger, family-sized layouts. Units are indicatively priced from *$2,050 psf*.",
     locationAnalysis:
       "Lentor Gardens Residences is a 2-minute walk from Lentor MRT Station on the Thomson-East Coast Line, with Lentor Modern Mall located right at the station for supermarkets, dining and retail. The development connects to the Central Expressway (CTE) and Seletar Expressway (SLE), and is directly linked to Hillock Park.",
     pricingAnalysis:
@@ -218,14 +228,19 @@ export const project = {
     marketComparison:
       "[MARKET COMPARISON — factual, sourced comparison to nearby comparable launches where information is available; omit if unverifiable.]",
     developerProfile:
-      "Lentor Gardens Residences is developed by Kingsford Lentor Project Pte Ltd (Housing Developer's Licence No. C1550), part of the Kingsford Group. Established in 2011, the Kingsford Group has delivered notable Singapore projects including Kingsford Hillview Peak (512 units), Kingsford Waterbay (1,165 units) and Normanton Park (1,862 units), with The Hill @ One-North, Chuan Park and One Marina Gardens currently underway. The Group's accolades include the Singapore Prestige Brand Award – Global Brands (2019) and multiple PropertyGuru Asia Property Awards (Singapore) between 2021 and 2025.",
+      "Lentor Gardens Residences is developed by Kingsford Lentor Project Pte Ltd (Housing Developer's Licence No. C1550), a subsidiary within the Kingsford Group. Huttons Asia Pte Ltd's appointment as authorised marketing agent for this development, with authorisation covering online and offline advertising, was confirmed in writing by Kingsford Huray Development Pte. Ltd. on behalf of Kingsford Huray Development Pte. Ltd. and its respective subsidiaries — the corporate parent within the Kingsford Group responsible for this appointment. Established in 2011, the Kingsford Group has delivered notable Singapore projects including Kingsford Hillview Peak (512 units), Kingsford Waterbay (1,165 units) and Normanton Park (1,862 units), with The Hill @ One-North, Chuan Park and One Marina Gardens currently underway. The Group's accolades include the Singapore Prestige Brand Award – Global Brands (2019) and multiple PropertyGuru Asia Property Awards (Singapore) between 2021 and 2025.",
     projectDisclaimer:
-      "This information is provided for general reference only and may be subject to change. Prices and unit availability must be reconfirmed directly with the developer or its authorised marketing agents. Images and renderings may be artists' impressions and may not represent the final development. Floor areas and dimensions are approximate and subject to final survey. This information does not form part of, and shall not be regarded as, an offer or contract. Buyers should refer to the Option to Purchase, Sale and Purchase Agreement and other official sale documents. Errors and omissions excepted.",
+      "Huttons Asia Pte Ltd is a formally appointed marketing agency for this project, and this website is operated independently by one of its salespersons — it is not the developer's official website, and does not represent the developer in any capacity beyond the appointed marketing agency relationship. Our role is to provide general information and assist with showflat visits. While every effort is made to ensure accuracy, neither the developer nor its marketing agents accept responsibility for any inaccuracies, omissions, or changes. All information provided — including details, renderings, floor plans, specifications, pricing, forward-looking statements, projections, and assumptions — is for general reference only, is subject to change without notice, should not be relied upon as fact, and does not constitute an offer or contract or form part of any contractual agreement. All visuals such as renderings, illustrations, and photographs are artistic impressions for illustrative purposes only and may not reflect the actual development or unit. Information is provided in good faith and updated as accurately as possible in coordination with the developer. Buyers should refer to the Option to Purchase, Sale and Purchase Agreement and other official sale documents. E&OE (errors and omissions excepted).",
     imageDisclaimer:
       "Images and artists' impressions are for illustration purposes only and may not represent the final completed development.",
   },
 
   faq: [
+    {
+      question: "Is this the official developer website for Lentor Gardens Residences?",
+      answer:
+        "No. This is an independent marketing website operated by Amelia Lek Kai Yi (CEA Reg. No. R072094A), a licensed salesperson with Huttons Asia Pte Ltd (CEA Lic. No. L3008899K). Huttons Asia Pte Ltd is a formally appointed marketing agency for Lentor Gardens Residences, appointed by Kingsford Huray Development Pte. Ltd. on behalf of itself and its respective subsidiaries (including Kingsford Lentor Project Pte Ltd, the project's licensed developer), with authorisation covering online and offline advertising. This website is not operated by, and is not affiliated with, the developer.",
+    },
     {
       question: "Where is Lentor Gardens Residences located?",
       answer: "Lentor Gardens Residences is located along Lentor Gardens in District 26, within walking distance of Lentor MRT Station and Lentor Modern Mall.",
@@ -240,7 +255,7 @@ export const project = {
     },
     {
       question: "Who is the developer of Lentor Gardens Residences?",
-      answer: "Lentor Gardens Residences is developed by Kingsford Lentor Project Pte Ltd, part of the Kingsford Group.",
+      answer: "Lentor Gardens Residences is developed by Kingsford Lentor Project Pte Ltd (HDB Housing Developer's Licence No. C1550), a subsidiary within the Kingsford Group. Huttons Asia Pte Ltd's marketing appointment for this project was confirmed by Kingsford Huray Development Pte. Ltd. on behalf of itself and its respective subsidiaries.",
     },
     {
       question: "When is Lentor Gardens Residences expected to be completed?",

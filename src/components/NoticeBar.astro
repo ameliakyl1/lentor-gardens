@@ -1,0 +1,67 @@
+---
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+---
+
+<div class="notice-bar" id="notice-bar">
+  <div class="container notice-bar-inner">
+    <p>
+      <strong>Important Notice:</strong> This is an independent marketing website operated by{" "}
+      {agent.fullName} (CEA Reg. No. {agent.ceaRegistrationNumber}), a licensed salesperson with
+      {" "}{agent.estateAgencyName} (CEA Lic. No. {agent.estateAgencyLicenceNumber}) — a formally
+      appointed marketing agency for {project.general.projectName}, appointed by{" "}
+      {project.general.developerAppointingEntity} This is not the official developer website.
+      All information is for general reference only.{" "}
+      <a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer">Verify on CEA Register</a>
+    </p>
+  </div>
+</div>
+
+<style>
+  .notice-bar {
+    position: sticky;
+    top: 0;
+    z-index: 210;
+    background: #1c1916;
+    padding-block: var(--space-2);
+  }
+  .notice-bar-inner {
+    max-width: 1600px;
+  }
+  .notice-bar-inner p {
+    margin: 0;
+    max-width: none;
+    font-size: 0.72rem;
+    line-height: 1.6;
+    color: rgba(250, 250, 247, 0.65);
+  }
+  .notice-bar-inner strong { color: rgba(250, 250, 247, 0.9); }
+  .notice-bar-inner a {
+    color: rgba(250, 250, 247, 0.9);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .notice-bar-inner a:hover { color: #fff; }
+
+  /*
+    On a 375px viewport this disclosure ran to ~8 lines — nearly a fifth of the screen before the
+    hero even starts. Tightened rather than shortened: the wording is the compliance surface and
+    must stay intact, so only the typography gives.
+  */
+  @media (max-width: 640px) {
+    .notice-bar { padding-block: var(--space-2) var(--space-3); }
+    .notice-bar-inner p { font-size: 0.68rem; line-height: 1.45; }
+  }
+</style>
+
+<script>
+  // Header.astro's sticky offset needs to sit right below this bar's actual rendered height,
+  // which varies with viewport width since the disclosure text wraps differently on mobile.
+  function setNoticeHeight() {
+    const bar = document.getElementById("notice-bar");
+    if (!bar) return;
+    document.documentElement.style.setProperty("--notice-height", `${bar.offsetHeight}px`);
+  }
+  setNoticeHeight();
+  window.addEventListener("resize", setNoticeHeight);
+</script>

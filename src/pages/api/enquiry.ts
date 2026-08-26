@@ -92,14 +92,11 @@ export const POST: APIRoute = async ({ request, clientAddress, locals }) => {
   const lead: LeadPayload = {
     fullName: body.fullName,
     mobileNumber: body.mobileNumber,
-    email: body.email ?? "",
     propertyInterest: body.propertyInterest,
-    preferredUnitType: body.preferredUnitType,
-    preferredContactMethod: body.preferredContactMethod,
-    preferredViewingDate: body.preferredViewingDate,
+    preferredUnitTypes: body.preferredUnitTypes ?? [],
+    interests: body.interests ?? [],
     message: body.message ?? "",
-    consentEnquiry: body.consentEnquiry,
-    consentMarketing: body.consentMarketing,
+    consent: body.consent,
     consentTimestamp: new Date().toISOString(),
     attribution: {
       utm_source: body.attribution?.utm_source ?? null,

@@ -1,0 +1,130 @@
+---
+import { project } from "@/data/project";
+import { agent } from "@/data/agent";
+const { general } = project;
+
+// A first-class page section (not a footnote) stating who runs this site and under what
+// authority. The same disclosure exists in the notice bar, footer and FAQ, but those are all
+// peripheral surfaces — this one is reachable from the main navigation, so the appointment
+// chain is somewhere a visitor (or a policy reviewer) can be sent directly.
+//
+// Note this project has two developer-side entities that must be reconciled rather than used
+// interchangeably: the licensed developer of record, and the group parent that signed Huttons
+// Asia's marketing appointment. Both are named here so the site matches the letter.
+const chain = [
+  {
+    step: "The developer",
+    name: general.developerShortName,
+    detail: `${general.projectName} is developed by ${general.developer} (HDB Housing Developer's Licence No. C1550), a subsidiary within the Kingsford Group. This website is not operated by, affiliated with, or endorsed by the developer.`,
+  },
+  {
+    step: "The appointed marketing agency",
+    name: agent.estateAgencyName,
+    detail: `${agent.estateAgencyName} (Estate Agency Licence No. ${agent.estateAgencyLicenceNumber}) is a formally appointed marketing agency for ${general.projectName}, appointed by ${general.developerAppointingEntity} on behalf of itself and its respective subsidiaries, with authorisation covering online and offline advertising.`,
+  },
+  {
+    step: "This website's operator",
+    name: agent.fullName,
+    detail: `I am a licensed salesperson registered with ${agent.estateAgencyName} (CEA Registration No. ${agent.ceaRegistrationNumber}). I operate this website independently, in my own name, as one of that agency's registered salespersons.`,
+  },
+];
+---
+
+<section id="about-website">
+  <div class="container">
+    <div class="section-heading">
+      <span class="section-eyebrow">About This Website</span>
+      <h2>Who operates this site</h2>
+      <p>
+        This is an independent marketing website. It is <strong>not</strong> the official
+        developer website for {general.projectName}. Here is exactly who is behind it and under
+        what authority it advertises.
+      </p>
+    </div>
+
+    <ol class="chain">
+      {chain.map((link, i) => (
+        <li class="chain-item">
+          <span class="chain-index" aria-hidden="true">{String(i + 1).padStart(2, "0")}</span>
+          <div class="chain-body">
+            <span class="chain-step">{link.step}</span>
+            <h3 class="chain-name">{link.name}</h3>
+            <p class="chain-detail">{link.detail}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <div class="verify-box">
+      <p>
+        <strong>Verify my registration.</strong> My licence status, registration number and
+        appointed agency are all listed on the Council for Estate Agencies (CEA) Public Register,
+        the Singapore government's official register of licensed property salespersons. Search for
+        “{agent.fullName}” or registration number {agent.ceaRegistrationNumber}.
+      </p>
+      <a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+        Open the CEA Public Register
+      </a>
+    </div>
+  </div>
+</section>
+
+<style>
+  .chain {
+    list-style: none;
+    margin: 0 0 var(--space-12);
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+  @media (max-width: 900px) { .chain { grid-template-columns: 1fr; } }
+
+  .chain-item {
+    display: flex;
+    gap: var(--space-4);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+  }
+  .chain-index {
+    font-family: var(--font-display);
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-accent);
+    line-height: 1.2;
+    flex-shrink: 0;
+  }
+  .chain-body { min-width: 0; }
+  .chain-step {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    margin-bottom: var(--space-2);
+  }
+  .chain-name {
+    font-size: 1.05rem;
+    line-height: 1.3;
+    margin: 0 0 var(--space-3);
+  }
+  .chain-detail {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    color: var(--color-ink-soft);
+    margin: 0;
+    max-width: none;
+  }
+
+  .verify-box {
+    border: 1px solid var(--color-border);
+    border-left: 3px solid var(--color-accent);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    background: var(--color-surface);
+  }
+  .verify-box p { margin: 0 0 var(--space-4); max-width: none; font-size: 0.92rem; }
+</style>

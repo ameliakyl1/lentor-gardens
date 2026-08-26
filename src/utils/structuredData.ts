@@ -13,20 +13,30 @@ export function buildRealEstateAgentSchema(canonicalUrl: string) {
     url: canonicalUrl,
     telephone: agent.mobileNumber,
     email: agent.email,
+    // The salesperson's own CEA registration, and the agency they are registered under — the
+    // two facts a reader needs to verify who operates this site and under whose licence.
+    identifier: agent.ceaRegistrationNumber,
     worksFor: {
       "@type": "Organization",
       name: agent.estateAgencyName,
+      identifier: agent.estateAgencyUen,
+      address: { "@type": "PostalAddress", ...agent.estateAgencyAddress },
     },
     areaServed: "Singapore",
   };
 }
 
+// Publishes the agency's verifiable business identity — UEN, licence, registered office — rather
+// than a bare country code, so the entity behind this site can be checked against ACRA and the
+// CEA register. Machine-readable counterpart to the same details shown in the footer.
 export function buildOrganizationSchema() {
   return {
     "@context": "https://schema.org",
     "@type": "Organization",
     name: agent.estateAgencyName,
-    address: { "@type": "PostalAddress", addressCountry: "SG" },
+    identifier: agent.estateAgencyUen,
+    telephone: agent.estateAgencyPhone,
+    address: { "@type": "PostalAddress", ...agent.estateAgencyAddress },
   };
 }
 

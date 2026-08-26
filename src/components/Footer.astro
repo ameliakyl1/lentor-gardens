@@ -7,8 +7,41 @@ const year = new Date().getFullYear();
 
 <footer class="site-footer border-top">
   <div class="container footer-grid">
-    <div>
-      <h3>Legal</h3>
+    <div class="footer-col footer-brand">
+      <span class="footer-col-heading">About This Website</span>
+      <div class="footer-disclosure-box">
+        <p>
+          Independently operated by <strong>{agent.fullName}</strong> (CEA Reg. No. {agent.ceaRegistrationNumber}),
+          licensed with <strong>{agent.estateAgencyName}</strong> (CEA Lic. No. {agent.estateAgencyLicenceNumber}).{" "}
+          {agent.estateAgencyName} is formally appointed as marketing agency for {project.general.projectName}{" "}
+          by <strong>{project.general.developerAppointingEntity}</strong> on behalf of itself and its respective
+          subsidiaries — including <strong>{project.general.developer}</strong>, the project's licensed developer
+          (HDB Housing Developer's Licence No. C1550) — with authorisation covering online and offline
+          advertising. This is <strong>not</strong> the developer's official website — pricing and availability
+          are for general reference only.{" "}
+          <a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer">Verify on CEA Register</a>.
+        </p>
+      </div>
+      <p class="footer-meta">Information last updated: {project.general.lastUpdated}</p>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-col-heading">Operated By</span>
+      <p class="operated-by-name">{agent.fullName}</p>
+      <p class="operated-by-line">{agent.estateAgencyName}</p>
+      <p class="operated-by-line">CEA Registration: {agent.ceaRegistrationNumber}</p>
+      <p class="operated-by-line">Agency Licence: {agent.estateAgencyLicenceNumber}</p>
+      <p class="operated-by-line">Agency UEN: {agent.estateAgencyUen}</p>
+      <p class="operated-by-line">Mobile: {agent.mobileNumber}</p>
+      <p class="operated-by-line">Email: {agent.email}</p>
+      <p class="operated-by-line operated-by-address">
+        Registered office: {agent.estateAgencyAddress.streetAddress},{" "}
+        {agent.estateAgencyAddress.addressLocality} {agent.estateAgencyAddress.postalCode}
+      </p>
+    </div>
+
+    <div class="footer-col">
+      <span class="footer-col-heading">Information</span>
       <ul class="footer-links">
         <li><a href="/privacy">Privacy Policy</a></li>
         <li><a href="/terms">Terms of Use</a></li>
@@ -17,20 +50,17 @@ const year = new Date().getFullYear();
         <li><a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer">CEA Public Register</a></li>
       </ul>
     </div>
-
-    <div>
-      <h3>Disclosure</h3>
-      <p class="footer-meta">
-        This is an independent property marketing website operated by {agent.fullName}, a
-        CEA-registered salesperson with {agent.estateAgencyName}. It is not the official
-        developer website.
-      </p>
-      <p class="footer-meta">Information last updated: {project.general.lastUpdated}</p>
-    </div>
   </div>
 
-  <div class="container footer-bottom">
-    <p>© {year} {agent.fullName}. All rights reserved.</p>
+  <div class="container footer-bottom-wrap">
+    <p class="footer-disclaimer">
+      Disclaimer: {project.content.projectDisclaimer} {agent.estateAgencyName}'s privacy
+      policy is available at{" "}
+      <a href="https://www.huttonsgroup.com/privacy-policy" target="_blank" rel="noopener noreferrer">
+        huttonsgroup.com/privacy-policy
+      </a>.
+    </p>
+    <p class="footer-copyright">© {year} {agent.fullName}. All rights reserved.</p>
   </div>
 </footer>
 
@@ -38,18 +68,35 @@ const year = new Date().getFullYear();
   .site-footer {
     background: var(--color-stone);
     padding-block: var(--space-8);
-    font-size: 0.9rem;
+    font-size: 0.85rem;
   }
   .footer-grid {
     display: grid;
-    grid-template-columns: 1fr 1.2fr;
+    grid-template-columns: 1.3fr 1fr 1fr;
     gap: var(--space-8);
     margin-bottom: var(--space-8);
   }
-  @media (max-width: 700px) {
+  @media (max-width: 900px) {
     .footer-grid { grid-template-columns: 1fr; }
   }
-  .footer-meta { color: var(--color-ink-soft); font-size: 0.88rem; }
+  .footer-disclosure-box { max-width: 460px; }
+  .footer-disclosure-box p { margin: 0; font-size: 0.82rem; color: var(--color-ink-soft); line-height: 1.5; }
+  .footer-col-heading {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+  .operated-by-name { margin: 0 0 var(--space-2); font-weight: 700; font-size: 0.95rem; color: var(--color-ink); }
+  .operated-by-line { margin: 0 0 var(--space-2); font-size: 0.85rem; color: var(--color-ink-soft); }
+  .operated-by-address { line-height: 1.5; }
+  .footer-meta { color: var(--color-ink-soft); font-size: 0.82rem; margin-top: var(--space-3); }
   .footer-links { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: var(--space-2); }
-  .footer-bottom { border-top: 1px solid var(--color-border); padding-top: var(--space-4); color: var(--color-ink-soft); font-size: 0.82rem; }
+  .footer-links a { font-size: 0.85rem; }
+  .footer-bottom-wrap { border-top: 1px solid var(--color-border); padding-top: var(--space-6); }
+  .footer-disclaimer { font-size: 0.78rem; color: var(--color-ink-soft); line-height: 1.6; margin: 0 0 var(--space-4); max-width: none; }
+  .footer-copyright { font-size: 0.78rem; color: var(--color-ink-soft); margin: 0; }
 </style>

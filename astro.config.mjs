@@ -8,7 +8,11 @@ import cloudflare from "@astrojs/cloudflare";
 // so it can run server-side validation and lead delivery as a Cloudflare Pages Function.
 export default defineConfig({
   site: "https://lentorgardensresidences-condo.com",
-  integrations: [sitemap()],
+  integrations: [
+    sitemap({
+      filter: (page) => !page.endsWith("/thank-you/"),
+    }),
+  ],
   output: "hybrid",
   adapter: cloudflare({ imageService: "compile" }),
   build: {

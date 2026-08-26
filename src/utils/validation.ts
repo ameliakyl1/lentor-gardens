@@ -4,14 +4,11 @@
 export type EnquiryFormData = {
   fullName: string;
   mobileNumber: string;
-  email: string;
   propertyInterest: string;
-  preferredUnitType: string;
-  preferredContactMethod: string;
-  preferredViewingDate: string;
+  preferredUnitTypes: string[];
+  interests: string[];
   message: string;
-  consentEnquiry: boolean;
-  consentMarketing: boolean;
+  consent: boolean;
   honeypot: string;
 };
 
@@ -28,11 +25,6 @@ export function isValidSgMobile(value: string): boolean {
   return SG_MOBILE_REGEX.test(normaliseSgMobile(value));
 }
 
-export function isValidEmail(value: string): boolean {
-  if (!value) return true; // email is optional
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-}
-
 export function validateEnquiry(data: EnquiryFormData): ValidationErrors {
   const errors: ValidationErrors = {};
 
@@ -46,16 +38,10 @@ export function validateEnquiry(data: EnquiryFormData): ValidationErrors {
     errors.fullName = "Please enter your full name.";
   }
   if (!data.mobileNumber || !isValidSgMobile(data.mobileNumber)) {
-    errors.mobileNumber = "Please enter a valid Singapore mobile number (e.g. 9123 4567).";
+    errors.mobileNumber = "Please enter a valid Singapore mobile number (e.g. 8123 4567).";
   }
-  if (data.email && !isValidEmail(data.email)) {
-    errors.email = "Please enter a valid email address.";
-  }
-  if (!data.preferredContactMethod) {
-    errors.preferredContactMethod = "Please select a preferred contact method.";
-  }
-  if (!data.consentEnquiry) {
-    errors.consentEnquiry = "Please confirm you consent to being contacted about this enquiry.";
+  if (!data.consent) {
+    errors.consent = "Please confirm your consent to be contacted.";
   }
 
   return errors;

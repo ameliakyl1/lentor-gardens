@@ -1,18 +1,13 @@
 ---
 import { nav } from "@/data/site";
-import { project } from "@/data/project";
+import { agent } from "@/data/agent";
 ---
 
 <header class="site-header" id="site-header">
   <div class="container header-inner">
-    <a href="#top" class="brand" aria-label={`${project.general.projectName} — back to top`}>
-      <img
-        src={project.media.projectLogo.src}
-        alt={project.media.projectLogo.alt}
-        width="216"
-        height="80"
-        class="brand-logo"
-      />
+    <a href="#top" class="brand" aria-label="Back to top">
+      <span class="brand-name">{agent.displayName}</span>
+      <span class="brand-meta">{agent.estateAgencyName} · CEA {agent.ceaRegistrationNumber}</span>
     </a>
 
     <nav class="primary-nav" aria-label="Primary">
@@ -57,7 +52,7 @@ import { project } from "@/data/project";
 <style>
   .site-header {
     position: sticky;
-    top: 0;
+    top: var(--notice-height);
     z-index: 100;
     background: var(--color-brand);
     border-bottom: 1px solid var(--color-brand);
@@ -68,15 +63,33 @@ import { project } from "@/data/project";
     align-items: center;
     gap: var(--space-8);
     height: var(--nav-height);
+    max-width: 1440px;
   }
 
   .brand {
     flex-shrink: 0;
-    line-height: 0;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    gap: 2px;
+    text-decoration: none;
+    line-height: 1.2;
   }
-  .brand-logo { height: 62px; width: auto; }
+  .brand-name {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 600;
+    color: var(--color-on-brand);
+    white-space: nowrap;
+  }
+  .brand-meta {
+    font-family: var(--font-sans);
+    font-size: 0.7rem;
+    letter-spacing: 0.04em;
+    color: var(--color-on-brand);
+    opacity: 0.75;
+    white-space: nowrap;
+  }
 
   .primary-nav { margin-left: auto; min-width: 0; }
   .primary-nav ul {
@@ -147,14 +160,14 @@ import { project } from "@/data/project";
     display: none;
   }
 
-  @media (max-width: 1240px) {
+  @media (max-width: 1400px) {
     .primary-nav, .desktop-cta { display: none; }
     .menu-toggle { display: flex; }
 
     .mobile-menu {
       display: block;
       position: fixed;
-      inset: var(--nav-height) 0 0 0;
+      inset: calc(var(--notice-height) + var(--nav-height)) 0 0 0;
       background: var(--color-bg);
       padding: var(--space-8) var(--space-6);
       transform: translateY(-8px);

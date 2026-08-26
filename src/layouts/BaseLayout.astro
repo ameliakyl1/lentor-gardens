@@ -1,7 +1,8 @@
 ---
 import "@/styles/global.css";
+import NoticeBar from "@/components/NoticeBar.astro";
 import { project } from "@/data/project";
-import { site, activeTheme } from "@/data/site";
+import { site, activeTheme, tracking } from "@/data/site";
 import {
   buildOrganizationSchema,
   buildWebSiteSchema,
@@ -97,10 +98,8 @@ const baseSchemas = [
       ))}
 
     <!--
-      Google Tag Manager placeholder — NOT a live tracking install.
-      Replace PUBLIC_GTM_ID in .env with a real container ID, and confirm Consent Mode
-      defaults below match your privacy policy, before enabling this in production.
       Consent Mode v2 defaults to "denied" until the visitor accepts via ConsentNotice.astro.
+      This must run before the GTM loader below so consent state exists when GTM's own tags fire.
     -->
     <script is:inline>
       window.dataLayer = window.dataLayer || [];
@@ -111,9 +110,35 @@ const baseSchemas = [
         wait_for_update: 500,
       });
     </script>
+
+    {!tracking.gtmId.includes("XXXXXXX") && (
+      <script is:inline define:vars={{ gtmId: tracking.gtmId }}>
+        (function (w, d, s, l, i) {
+          w[l] = w[l] || [];
+          w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
+          var f = d.getElementsByTagName(s)[0],
+            j = d.createElement(s),
+            dl = l != "dataLayer" ? "&l=" + l : "";
+          j.async = true;
+          j.src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+          f.parentNode.insertBefore(j, f);
+        })(window, document, "script", "dataLayer", gtmId);
+      </script>
+    )}
   </head>
   <body>
+    {!tracking.gtmId.includes("XXXXXXX") && (
+      <noscript>
+        <iframe
+          src={`https://www.googletagmanager.com/ns.html?id=${tracking.gtmId}`}
+          height="0"
+          width="0"
+          style="display:none;visibility:hidden"
+        />
+      </noscript>
+    )}
     <a href="#main-content" class="skip-link">Skip to main content</a>
+    <NoticeBar />
     <slot />
 
     <script>

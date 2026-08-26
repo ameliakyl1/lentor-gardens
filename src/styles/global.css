@@ -53,6 +53,7 @@
 
   --nav-height: 100px;
   --mobile-bar-height: 64px;
+  --notice-height: 42px; /* fallback before NoticeBar.astro measures its real rendered height */
 }
 
 /* Teal variant, lifted from the landscape mood board's elevated-pool water tone */

@@ -13,14 +13,11 @@
 export type LeadPayload = {
   fullName: string;
   mobileNumber: string;
-  email: string;
   propertyInterest: string;
-  preferredUnitType: string;
-  preferredContactMethod: string;
-  preferredViewingDate: string;
+  preferredUnitTypes: string[];
+  interests: string[];
   message: string;
-  consentEnquiry: boolean;
-  consentMarketing: boolean;
+  consent: boolean;
   consentTimestamp: string;
   attribution: {
     utm_source: string | null;

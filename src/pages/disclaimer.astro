@@ -8,34 +8,71 @@ import { project } from "@/data/project";
 
 <BaseLayout
   title={`Disclaimer | ${project.general.projectName}`}
-  description="Project disclaimer covering pricing, availability, images and general information accuracy."
+  description="Disclaimer covering pricing, availability, images and general information accuracy for this independent property marketing website."
 >
   <Header />
   <main id="main-content">
     <section class="bg-surface legal-page">
       <div class="container legal-content">
         <h1>Disclaimer</h1>
+        <p class="legal-updated">Last updated: {project.general.lastUpdated}</p>
+
+        <div class="legal-notice-box">
+          <p>
+            This is an independent property marketing website operated by {agent.fullName}, a
+            CEA-registered salesperson with {agent.estateAgencyName}. It is not the official
+            developer website.
+          </p>
+        </div>
+
+        <p>Please read this disclaimer carefully before relying on any information on this website.</p>
 
         <p>{project.content.projectDisclaimer}</p>
 
+        <h2>General information only</h2>
         <ul class="disclaimer-list">
           <li>Information is provided for general reference only.</li>
           <li>Information may be subject to change without notice.</li>
-          <li>Prices and availability must be reconfirmed directly with the developer or its authorised marketing agents.</li>
+          <li>Prices, unit availability and promotional arrangements must be reconfirmed against the latest developer-issued documents.</li>
           <li>Images and renderings may be artists' impressions and may not represent the final development.</li>
           <li>Floor areas and dimensions are approximate and subject to final survey.</li>
+          <li>Distances and travel times are approximate and are not guaranteed.</li>
           <li>This information does not form part of, and shall not be regarded as, an offer or contract.</li>
           <li>Buyers should refer to the Option to Purchase, Sale and Purchase Agreement and other official sale documents.</li>
           <li>Errors and omissions excepted.</li>
         </ul>
 
+        <h2>No guarantees</h2>
+        <p>
+          Nothing on this website guarantees any financial return, rental yield, capital
+          appreciation, resale demand, loan approval, school admission or the completion of any
+          future infrastructure. Property decisions carry risk, and you should perform your own
+          due diligence.
+        </p>
+
         <h2>Independent marketing website</h2>
         <p>
-          This is an independent property marketing website operated by {agent.fullName}, a
-          CEA-registered salesperson with {agent.estateAgencyName}. It is not the official
-          developer website, and {agent.fullName} is not represented as the exclusive
-          salesperson or agency for {project.general.projectName} unless expressly stated with
-          supporting authorisation.
+          This website is independently operated by {agent.fullName} of {agent.estateAgencyName} to
+          market {project.general.projectName}. {agent.estateAgencyName} is a formally appointed
+          marketing agency for this project. This website is not operated by, and is not the
+          official website of, the developer or any government body. {agent.fullName} is not
+          represented as the exclusive salesperson or agency for {project.general.projectName}{" "}
+          unless expressly stated with supporting authorisation.
+        </p>
+
+        <h2>Third-party trademarks</h2>
+        <p>
+          Project names, developer names, logos and related marks are the property of their
+          respective owners and are referenced for identification and marketing purposes only.
+        </p>
+
+        <h2>Huttons Asia privacy policy</h2>
+        <p>
+          {agent.estateAgencyName}'s group privacy policy, covering how the agency handles
+          personal data, is available at{" "}
+          <a href="https://www.huttonsgroup.com/privacy-policy" target="_blank" rel="noopener noreferrer">
+            huttonsgroup.com/privacy-policy
+          </a>.
         </p>
       </div>
     </section>
@@ -46,5 +83,14 @@ import { project } from "@/data/project";
 <style>
   .legal-page { padding-block: var(--space-16); }
   .legal-content { max-width: 760px; }
+  .legal-content h2 { margin-top: var(--space-8); }
+  .legal-updated { color: var(--color-ink-soft); font-size: 0.9rem; margin-bottom: var(--space-8); }
+  .legal-notice-box {
+    background: var(--color-stone);
+    border-radius: var(--radius-md);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+  .legal-notice-box p { margin: 0; font-weight: 600; }
   .disclaimer-list { color: var(--color-ink-soft); }
 </style>

@@ -53,38 +53,48 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
       </div>
 
       <div class="form-field">
-        <label class="form-label" for="mobileNumber">Singapore Mobile Number</label>
-        <input class="form-input" type="tel" id="mobileNumber" name="mobileNumber" autocomplete="tel" placeholder="9123 4567" required />
+        <label class="form-label" for="mobileNumber">WhatsApp Number</label>
+        <div class="phone-input">
+          <span class="phone-prefix">+65 Singapore</span>
+          <input
+            class="form-input phone-number"
+            type="tel"
+            id="mobileNumber"
+            name="mobileNumber"
+            autocomplete="tel"
+            placeholder="8123 4567"
+            required
+          />
+        </div>
         <p class="form-error" id="mobileNumber-error" hidden></p>
       </div>
 
       <div class="form-field">
-        <label class="form-label" for="email">Email Address (optional)</label>
-        <input class="form-input" type="email" id="email" name="email" autocomplete="email" />
-        <p class="form-error" id="email-error" hidden></p>
-      </div>
-
-      <div class="form-field">
-        <label class="form-label" for="preferredUnitType">Preferred Unit Type</label>
-        <select class="form-select" id="preferredUnitType" name="preferredUnitType">
-          <option value="">No preference</option>
-          {project.unitTypes.map((u) => <option value={u.type}>{u.type}</option>)}
-        </select>
-      </div>
-
-      <div class="form-field">
-        <span class="form-label" id="contact-method-label">Preferred Contact Method</span>
-        <div class="radio-group" role="radiogroup" aria-labelledby="contact-method-label">
-          <label><input type="radio" name="preferredContactMethod" value="Call" required /> Call</label>
-          <label><input type="radio" name="preferredContactMethod" value="WhatsApp" /> WhatsApp</label>
-          <label><input type="radio" name="preferredContactMethod" value="Email" /> Email</label>
+        <span class="form-label" id="unit-type-label">Preferred Unit Type</span>
+        <div class="checkbox-grid" role="group" aria-labelledby="unit-type-label">
+          {project.unitTypes.map((u) => (
+            <label class="checkbox-tile">
+              <input type="checkbox" name="preferredUnitTypes" value={u.type} /> {u.type}
+            </label>
+          ))}
         </div>
-        <p class="form-error" id="preferredContactMethod-error" hidden></p>
       </div>
 
       <div class="form-field">
-        <label class="form-label" for="preferredViewingDate">Preferred Viewing Date (optional)</label>
-        <input class="form-input" type="date" id="preferredViewingDate" name="preferredViewingDate" />
+        <span class="form-label" id="interests-label">I'm Interested In</span>
+        <div class="checkbox-stack" role="group" aria-labelledby="interests-label">
+          <label class="checkbox-tile">
+            <input type="checkbox" name="interests" value="Arrange Showflat Viewing" /> Arrange Showflat Viewing
+          </label>
+          <label class="checkbox-tile">
+            <input type="checkbox" name="interests" value="Request for Brochure & Floorplans" /> Request for Brochure
+            & Floorplans
+          </label>
+          <label class="checkbox-tile">
+            <input type="checkbox" name="interests" value="Request for Latest Pricelist & Available Units" /> Request
+            for Latest Pricelist & Available Units
+          </label>
+        </div>
       </div>
 
       <div class="form-field">
@@ -106,23 +116,16 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
       </div>
 
       <div class="checkbox-field">
-        <input type="checkbox" id="consentEnquiry" name="consentEnquiry" required />
-        <label for="consentEnquiry">
-          By submitting this enquiry, I confirm that I have read the
-          <a href="/privacy">Privacy Policy</a> and consent to {agent.fullName} of
-          {agent.estateAgencyName} contacting me regarding this property enquiry through my
-          selected contact method.
+        <input type="checkbox" id="consent" name="consent" required />
+        <label for="consent">
+          By submitting this enquiry, I consent to the collection and use of my personal data for
+          the purpose of this property enquiry. I have read the <a href="/privacy">Privacy Policy</a>
+          and <a href="/terms">Terms & Conditions</a>, and I consent to {agent.fullName} of
+          {agent.estateAgencyName} contacting me regarding this enquiry in accordance with
+          Singapore's PDPA.
         </label>
       </div>
-      <p class="form-error" id="consentEnquiry-error" hidden></p>
-
-      <div class="checkbox-field">
-        <input type="checkbox" id="consentMarketing" name="consentMarketing" />
-        <label for="consentMarketing">
-          I would also like to receive information about other Singapore property launches and
-          relevant property market updates. I understand that I may withdraw my consent at any time.
-        </label>
-      </div>
+      <p class="form-error" id="consent-error" hidden></p>
 
       <button type="submit" class="btn btn-accent btn-block" id="submit-btn">
         <span id="submit-btn-label">Submit Enquiry</span>
@@ -138,8 +141,13 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
   .response-note { font-size: 0.85rem; color: var(--color-ink-soft); }
   .agent-credentials { font-size: 0.85rem; color: var(--color-ink-soft); margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
   .agent-credentials a { font-size: 0.85rem; }
-  .radio-group { display: flex; gap: var(--space-4); flex-wrap: wrap; font-size: 0.92rem; }
-  .radio-group label { display: flex; align-items: center; gap: var(--space-2); }
+  .phone-input { display: flex; border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; }
+  .phone-prefix { display: flex; align-items: center; padding: 0 var(--space-3); background: var(--color-border); color: var(--color-ink); font-size: 0.9rem; white-space: nowrap; border-right: 1px solid var(--color-border); }
+  .phone-number { border: none; border-radius: 0; flex: 1; }
+  .checkbox-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: var(--space-3); }
+  .checkbox-stack { display: flex; flex-direction: column; gap: var(--space-3); }
+  .checkbox-tile { display: flex; align-items: center; gap: var(--space-2); padding: var(--space-3); border: 1px solid var(--color-border); border-radius: var(--radius-sm); font-size: 0.92rem; cursor: pointer; }
+  .checkbox-tile input { flex-shrink: 0; }
   .form-status:not(:empty) { padding: var(--space-3) var(--space-4); border-radius: var(--radius-sm); margin-bottom: var(--space-4); font-size: 0.9rem; }
   .form-status[data-state="success"] { background: color-mix(in srgb, var(--color-success) 12%, transparent); color: var(--color-success); }
   .form-status[data-state="error"] { background: color-mix(in srgb, var(--color-error) 12%, transparent); color: var(--color-error); }
@@ -202,20 +210,15 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
     const data: EnquiryFormData = {
       fullName: String(formData.get("fullName") ?? ""),
       mobileNumber: String(formData.get("mobileNumber") ?? ""),
-      email: String(formData.get("email") ?? ""),
       propertyInterest: project.general.projectName,
-      preferredUnitType: String(formData.get("preferredUnitType") ?? ""),
-      preferredContactMethod: String(formData.get("preferredContactMethod") ?? ""),
-      preferredViewingDate: String(formData.get("preferredViewingDate") ?? ""),
+      preferredUnitTypes: formData.getAll("preferredUnitTypes").map(String),
+      interests: formData.getAll("interests").map(String),
       message: String(formData.get("message") ?? ""),
-      consentEnquiry: formData.get("consentEnquiry") === "on",
-      consentMarketing: formData.get("consentMarketing") === "on",
+      consent: formData.get("consent") === "on",
       honeypot: String(formData.get("companyWebsite") ?? ""),
     };
 
-    ["fullName", "mobileNumber", "email", "preferredContactMethod", "consentEnquiry"].forEach((f) =>
-      showFieldError(f)
-    );
+    ["fullName", "mobileNumber", "consent"].forEach((f) => showFieldError(f));
 
     const errors = validateEnquiry(data);
     const turnstileToken = String(formData.get("cf-turnstile-response") ?? "");

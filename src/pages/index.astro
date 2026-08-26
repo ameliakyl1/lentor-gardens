@@ -9,6 +9,7 @@ import Floorplans from "@/components/Floorplans.astro";
 import Brochure from "@/components/Brochure.astro";
 import Gallery from "@/components/Gallery.astro";
 import Developer from "@/components/Developer.astro";
+import AboutThisWebsite from "@/components/AboutThisWebsite.astro";
 import Faq from "@/components/Faq.astro";
 import Contact from "@/components/Contact.astro";
 import Footer from "@/components/Footer.astro";
@@ -18,9 +19,9 @@ import { project } from "@/data/project";
 import { buildRealEstateAgentSchema, buildFaqSchema } from "@/utils/structuredData";
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-const title = "Lentor Gardens Residences | New Condo Next to Lentor MRT";
+const title = "Amelia Lek | Huttons Asia Pte Ltd (R072094A) | Marketing Lentor Gardens Residences";
 const description =
-  "Lentor Gardens Residences — 499-unit 99-yr leasehold condo near Lentor MRT & Lentor Modern Mall. 2-4 bedders & strata terraces from $2,050 psf.";
+  "Independent marketing site operated by Amelia Lek Kai Yi (CEA Reg. R072094A), a licensed salesperson with Huttons Asia Pte Ltd, appointed to market Lentor Gardens Residences — a 499-unit 99-yr leasehold condo near Lentor MRT. Not the official developer website.";
 ---
 
 <BaseLayout
@@ -39,6 +40,7 @@ const description =
     <Gallery />
     <Developer />
     <Faq />
+    <AboutThisWebsite />
     <Contact />
   </main>
   <Footer />

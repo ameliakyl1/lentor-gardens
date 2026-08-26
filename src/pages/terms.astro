@@ -15,10 +15,6 @@ import { project } from "@/data/project";
     <section class="bg-surface legal-page">
       <div class="container legal-content">
         <h1>Terms of Use</h1>
-        <p class="disclaimer-box">
-          This page is a template and has not been reviewed by a lawyer. It must be reviewed
-          for legal sufficiency before this website is published.
-        </p>
 
         <h2>Website operator</h2>
         <p>
@@ -28,8 +24,10 @@ import { project } from "@/data/project";
 
         <h2>Independent marketing website</h2>
         <p>
-          This website is an independent marketing website for {project.general.projectName}. It
-          is not the official developer website and does not represent {project.general.developer}.
+          This website is an independent marketing website for {project.general.projectName}, operated
+          by {agent.fullName} of {agent.estateAgencyName}, a formally appointed marketing agency for
+          this project. It is not the official developer website and is not operated by{" "}
+          {project.general.developer}.
         </p>
 
         <h2>Information accuracy</h2>

@@ -5,4 +5,4 @@ Allow: /
 User-agent: AdsBot-Google
 Allow: /
 
-Sitemap: https://example-new-launch.vercel.app/sitemap-index.xml
+Sitemap: https://lentorgardensresidences-condo.com/sitemap-index.xml

@@ -27,6 +27,10 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
   <div class="hero-scrim" aria-hidden="true"></div>
 
   <div class="container hero-content">
+    <p class="hero-eyebrow">
+      Presented by {agent.fullName} · {agent.estateAgencyName} · CEA {agent.ceaRegistrationNumber}
+    </p>
+
     <h1 class="hero-heading">{content.heroHeadline}</h1>
 
     <ul class="hero-facts">
@@ -72,6 +76,14 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
     padding-block: var(--space-16) var(--space-16);
     max-width: 760px;
   }
+  .hero-eyebrow {
+    margin: 0 0 var(--space-3);
+    color: var(--color-on-brand-accent);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
   .hero-heading { color: #fff; margin-bottom: var(--space-4); }
   .hero-facts {
     list-style: none;
@@ -85,9 +97,26 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
   .hero-ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
   .hero-updated { font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin: 0; }
 
+  /*
+    Mobile keeps the desktop composition rather than degrading into a ragged stack: the two CTAs
+    stay a side-by-side pair of equal width instead of wrapping to whatever their label lengths
+    happen to produce.
+  */
   @media (max-width: 640px) {
     .hero { min-height: 92vh; }
     .hero-content { padding-block: var(--space-8); }
+
+    .hero-ctas {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3);
+    }
+    .hero-ctas .btn {
+      padding-inline: var(--space-2);
+      text-align: center;
+      white-space: normal;
+      line-height: 1.3;
+    }
   }
 </style>
 

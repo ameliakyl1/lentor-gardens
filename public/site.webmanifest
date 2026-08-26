@@ -1,10 +1,11 @@
 {
-  "name": "[PROJECT NAME] | Amelia Lek, Huttons Asia",
-  "short_name": "[PROJECT NAME]",
+  "name": "Amelia Lek | Huttons Asia Pte Ltd (R072094A) | Marketing Lentor Gardens Residences",
+  "short_name": "Amelia Lek",
+  "description": "Independent marketing site operated by Amelia Lek Kai Yi (CEA Reg. R072094A), a licensed salesperson with Huttons Asia Pte Ltd. Not the official developer website.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f4f4ea",
-  "theme_color": "#7e553a",
+  "background_color": "#f5f4ee",
+  "theme_color": "#1c3923",
   "icons": [
     {
       "src": "/favicon.svg",

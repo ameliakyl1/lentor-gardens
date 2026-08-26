@@ -3,10 +3,6 @@ import { project } from "@/data/project";
 const { location, content } = project;
 
 const amenityCategories = Array.from(new Set(location.amenities.map((a) => a.category)));
-const groupedAmenities = amenityCategories.map((cat) => ({
-  category: cat,
-  items: location.amenities.filter((a) => a.category === cat),
-}));
 ---
 
 <section id="location" class="bg-surface">
@@ -43,8 +39,14 @@ const groupedAmenities = amenityCategories.map((cat) => ({
       </div>
     </div>
 
-    <!-- Desktop / tablet: filter chips + always-visible grid (unchanged from before) -->
-    <div class="amenity-desktop-view">
+    <!--
+      One presentation at every width: filter chips over an always-visible card grid. Mobile
+      previously swapped in a collapsed category accordion — a genuinely different UI from the
+      desktop grid — which was changed so the two views read as the same design. The filter
+      chips carry the load the accordion used to: tapping a category narrows 15+ amenities to a
+      handful instead of hiding them behind a disclosure.
+    -->
+    <div class="amenity-view">
       <div class="filter-bar" role="group" aria-label="Filter nearby amenities by category">
         <button type="button" class="filter-chip is-active" data-filter="all">All</button>
         {amenityCategories.map((cat) => (
@@ -64,28 +66,6 @@ const groupedAmenities = amenityCategories.map((cat) => ({
       </div>
     </div>
 
-    <!-- Mobile: collapsed-by-default accordion, grouped by category — nothing renders open
-         until tapped, so visitors aren't forced to scroll past all 15+ amenities at once. -->
-    <div class="amenity-mobile-view">
-      {groupedAmenities.map(({ category, items }) => (
-        <details class="amenity-accordion">
-          <summary>
-            <span>{category}</span>
-            <span class="accordion-chevron" aria-hidden="true"></span>
-          </summary>
-          <div class="amenity-accordion-panel">
-            {items.map((item) => (
-              <div class="amenity-card">
-                <span class="amenity-eyebrow">{item.distance}</span>
-                <span class="amenity-divider" aria-hidden="true"></span>
-                <h3 class="amenity-name">{item.name}</h3>
-                <p class="amenity-desc">{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </details>
-      ))}
-    </div>
 
     <p class="disclaimer-box">
       School names and distances are indicative and approximate. Proximity does not confer any
@@ -153,13 +133,6 @@ const groupedAmenities = amenityCategories.map((cat) => ({
     border-radius: 999px;
   }
 
-  /* Toggle between desktop (grid+filters) and mobile (accordion) presentations */
-  .amenity-mobile-view { display: none; }
-  @media (max-width: 700px) {
-    .amenity-desktop-view { display: none; }
-    .amenity-mobile-view { display: block; }
-  }
-
   .amenity-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -167,6 +140,24 @@ const groupedAmenities = amenityCategories.map((cat) => ({
     margin-bottom: var(--space-8);
   }
   @media (max-width: 900px) { .amenity-grid { grid-template-columns: 1fr 1fr; } }
+  /* One column below 640px — two columns leaves each card under ~150px, too narrow for the
+     name plus description to sit comfortably. */
+  @media (max-width: 640px) { .amenity-grid { grid-template-columns: 1fr; } }
+
+  /* Keep the chips on a single scrollable row on narrow screens rather than letting them wrap
+     into a three-row block that pushes the grid off-screen. */
+  @media (max-width: 640px) {
+    .amenity-view .filter-bar {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+      margin-inline: calc(-1 * var(--space-4));
+      padding-inline: var(--space-4);
+    }
+    .amenity-view .filter-bar::-webkit-scrollbar { display: none; }
+    .amenity-view .filter-chip { flex: 0 0 auto; }
+  }
 
   .amenity-card {
     background: var(--color-surface);
@@ -191,48 +182,6 @@ const groupedAmenities = amenityCategories.map((cat) => ({
   }
   .amenity-name { margin-bottom: var(--space-2); font-size: 1.1rem; }
   .amenity-desc { margin: 0; font-size: 0.9rem; color: var(--color-ink-soft); line-height: 1.5; }
-
-  /* Mobile accordion */
-  .amenity-mobile-view { margin-bottom: var(--space-6); }
-  .amenity-accordion {
-    background: var(--color-surface);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    margin-bottom: var(--space-3);
-    overflow: hidden;
-  }
-  .amenity-accordion summary {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--space-4) var(--space-6);
-    font-weight: 600;
-    font-size: 0.98rem;
-    cursor: pointer;
-    list-style: none;
-  }
-  .amenity-accordion summary::-webkit-details-marker { display: none; }
-  .accordion-chevron {
-    width: 10px;
-    height: 10px;
-    border-right: 2px solid var(--color-ink-soft);
-    border-bottom: 2px solid var(--color-ink-soft);
-    transform: rotate(45deg);
-    transition: transform 150ms ease;
-    flex-shrink: 0;
-  }
-  details[open] > summary .accordion-chevron { transform: rotate(-135deg); }
-
-  .amenity-accordion-panel {
-    padding: 0 var(--space-4) var(--space-4);
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-3);
-  }
-  .amenity-accordion-panel .amenity-card { padding: var(--space-4); }
-  .amenity-accordion-panel .amenity-divider { margin: var(--space-2) 0; }
-  .amenity-accordion-panel .amenity-name { margin-bottom: 2px; font-size: 1rem; }
-  .amenity-accordion-panel .amenity-desc { font-size: 0.85rem; }
 
   .map-modal { position: fixed; inset: 0; z-index: 300; display: flex; align-items: center; justify-content: center; padding: var(--space-6); }
   .map-modal[hidden] { display: none; }
@@ -260,7 +209,7 @@ const groupedAmenities = amenityCategories.map((cat) => ({
 
 <script>
   const chips = document.querySelectorAll<HTMLButtonElement>(".filter-bar .filter-chip");
-  const amenityCards = document.querySelectorAll<HTMLElement>(".amenity-desktop-view .amenity-card");
+  const amenityCards = document.querySelectorAll<HTMLElement>(".amenity-view .amenity-card");
 
   chips.forEach((chip) => {
     chip.addEventListener("click", () => {

@@ -8,6 +8,18 @@ export const agent = {
   ceaRegistrationNumber: "R072094A",
   estateAgencyName: "Huttons Asia Pte Ltd",
   estateAgencyLicenceNumber: "L3008899K",
+  // Agency (not personal) registration details, taken from the Huttons Asia letterhead on the
+  // developer authorisation letters. A salesperson has no UEN of their own — this is the
+  // company's, published so that the business behind this site is independently verifiable
+  // (ACRA/BizFile for the UEN, the CEA register for the licence).
+  estateAgencyUen: "200210087C",
+  estateAgencyPhone: "+65 6253 0030",
+  estateAgencyAddress: {
+    streetAddress: "3 Bishan Place, #05-01 CPF Bishan Building",
+    addressLocality: "Singapore",
+    postalCode: "579838",
+    addressCountry: "SG",
+  },
   mobileNumber: "+65 8186 6812",
   whatsappNumber: "+65 8186 6812", // digits only with country code, e.g. 65 9XXX XXXX, for wa.me links
   email: "amelialekera@gmail.com",
@@ -25,7 +37,12 @@ export const agent = {
     { label: "Instagram", url: "[INSTAGRAM URL]" },
     { label: "LinkedIn", url: "[LINKEDIN URL]" },
   ],
-  ceaVerificationUrl: "https://www.cea.gov.sg/public-register/",
+  // Stable CEA public-register search page. Do NOT swap this for a deep link to the individual
+  // record: those URLs carry a session-style token (".../sales/1/56e219c0-.../sales?name=...")
+  // that has been observed rendering a blank page on other devices even while returning HTTP 200.
+  // Ad reviewers are pointed at this link as the primary proof of licensing, so it has to resolve
+  // for someone who has never visited the site before — reliability beats saving one search.
+  ceaVerificationUrl: "https://eservices.cea.gov.sg/aceas/public-register",
 } as const;
 
 export type Agent = typeof agent;

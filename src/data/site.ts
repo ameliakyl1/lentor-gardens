@@ -2,15 +2,20 @@
 // Tracking IDs are read from environment variables at build time — see .env.example.
 // Do NOT hard-code real tracking IDs here.
 
+// Nav deliberately carries an "About This Website" entry and no developer entry. On a site whose
+// core disclosure is "I am an independent agent, this is not the developer's site", giving the
+// developer a permanent top-level nav slot foregrounds the wrong party; the developer is still
+// described in its own section further down the page, just not promoted in the navigation.
+// The project overview is labelled "Overview" so that "About" is free to mean the disclosure.
 export const nav = [
-  { label: "About", href: "#about" },
+  { label: "Overview", href: "#about" },
   { label: "Location", href: "#location" },
   { label: "Price", href: "#price" },
   { label: "Floorplans", href: "#floorplans" },
   { label: "Brochure", href: "#brochure" },
   { label: "Gallery", href: "#gallery" },
-  { label: "About the Developer", href: "#developer" },
   { label: "FAQ", href: "#faq" },
+  { label: "About This Website", href: "#about-website" },
   { label: "Contact", href: "#contact" },
 ] as const;
 
