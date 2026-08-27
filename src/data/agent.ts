@@ -46,6 +46,10 @@ export const agent = {
     "https://eservices.cea.gov.sg/aceas/public-register/sales/1/56e219c0-ed42-448f-97dd-617edd9beb73/sales?name=amelia%20lek&page=1&pageSize=10&sort=name&sortAscFlag=true",
   // Stable, token-free entry point to the register. Never expires; requires a search.
   ceaRegisterSearchUrl: "https://eservices.cea.gov.sg/aceas/public-register",
+  // The agency's own public listing for this salesperson, on Huttons Asia's corporate domain.
+  // Independent corroboration of the agency relationship itself — the CEA register proves the
+  // licence, this proves Huttons publicly recognises the person operating this site.
+  huttonsAgentProfileUrl: "https://agents.huttonsgroup.com/R072094A",
 } as const;
 
 export type Agent = typeof agent;
