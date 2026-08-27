@@ -37,12 +37,15 @@ export const agent = {
     { label: "Instagram", url: "[INSTAGRAM URL]" },
     { label: "LinkedIn", url: "[LINKEDIN URL]" },
   ],
-  // Stable CEA public-register search page. Do NOT swap this for a deep link to the individual
-  // record: those URLs carry a session-style token (".../sales/1/56e219c0-.../sales?name=...")
-  // that has been observed rendering a blank page on other devices even while returning HTTP 200.
-  // Ad reviewers are pointed at this link as the primary proof of licensing, so it has to resolve
-  // for someone who has never visited the site before — reliability beats saving one search.
-  ceaVerificationUrl: "https://eservices.cea.gov.sg/aceas/public-register",
+  // Deep link straight to the CEA record — a reviewer lands on the registration without having
+  // to search, which is the point. The "56e219c0-..." segment is a session-style token, so this
+  // URL is not guaranteed permanent (it showed a blank page once before). Verified rendering the
+  // full record on 27 Aug 2026. If it ever breaks, fall back to ceaRegisterSearchUrl below —
+  // that is also what the About This Website section offers as a backup route.
+  ceaVerificationUrl:
+    "https://eservices.cea.gov.sg/aceas/public-register/sales/1/56e219c0-ed42-448f-97dd-617edd9beb73/sales?name=amelia%20lek&page=1&pageSize=10&sort=name&sortAscFlag=true",
+  // Stable, token-free entry point to the register. Never expires; requires a search.
+  ceaRegisterSearchUrl: "https://eservices.cea.gov.sg/aceas/public-register",
 } as const;
 
 export type Agent = typeof agent;

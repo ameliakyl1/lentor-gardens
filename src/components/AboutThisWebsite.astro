@@ -59,12 +59,17 @@ const chain = [
       <p>
         <strong>Verify my registration.</strong> My licence status, registration number and
         appointed agency are all listed on the Council for Estate Agencies (CEA) Public Register,
-        the Singapore government's official register of licensed property salespersons. Search for
-        “{agent.fullName}” or registration number {agent.ceaRegistrationNumber}.
+        the Singapore government's official register of licensed property salespersons. The button
+        below opens my record directly.
       </p>
       <a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-        Open the CEA Public Register
+        View my CEA registration
       </a>
+      <p class="verify-fallback">
+        If that link does not open, go to{" "}
+        <a href={agent.ceaRegisterSearchUrl} target="_blank" rel="noopener noreferrer">the CEA Public Register</a>{" "}
+        and search for “{agent.fullName}” or registration number {agent.ceaRegistrationNumber}.
+      </p>
     </div>
   </div>
 </section>
@@ -127,4 +132,5 @@ const chain = [
     background: var(--color-surface);
   }
   .verify-box p { margin: 0 0 var(--space-4); max-width: none; font-size: 0.92rem; }
+  .verify-fallback { margin: var(--space-4) 0 0; font-size: 0.82rem; color: var(--color-ink-soft); }
 </style>
