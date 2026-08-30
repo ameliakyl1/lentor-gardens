@@ -41,6 +41,7 @@ export const project = {
     architect: "[ARCHITECT — VERIFY]",
     mainContractor: "[MAIN CONTRACTOR — VERIFY]",
     numberOfUnits: "502 in total — 499 residential units (including 3 strata terraces) plus 3 shops",
+    residentialUnitCount: 499, // numeric form of the residential unit count, for schema.org markup
     numberOfCarparkLots: "402",
     unitTypesSummary: "2 to 4 Bedrooms, Strata Terraces",
     numberOfBlocks: "4 (3 blocks of 16 storeys, 1 block of 8 storeys), plus 3 strata terrace units",
@@ -48,7 +49,10 @@ export const project = {
     landSize: "20,639.4 sqm, Gross Plot Ratio 2.1",
     expectedTOP: "31 December 2030 (Vacant Possession)",
     planningArea: "Ang Mo Kio",
-    projectStatus: "Launched — Limited Units Available",
+    projectStatus:
+      "Launched 4 July 2026 — request the current balance-unit chart for live availability",
+    // Avoid scarcity wording ("Limited Units") unless current inventory can be evidenced from the
+    // developer balance-unit chart. Unsubstantiated scarcity is a Google Ads unreliable-claims risk.
     previewDate: "[PREVIEW DATE — VERIFY]",
     bookingDate: "[BOOKING DATE — VERIFY]",
     showflatAddress: "[SHOWFLAT ADDRESS — VERIFY]",
@@ -57,7 +61,10 @@ export const project = {
 
   pricing: {
     indicativeStartingPrice: "To be updated",
-    indicativePsfRange: "From $2,050 psf",
+    indicativePsfRange: "Available on request",
+    // Do not publish a "from" PSF figure unless it is confirmed against the CURRENT developer
+    // price list and a unit is genuinely available at it. A stale entry-price is a Google Ads
+    // dishonest-pricing / unreliable-claims risk.
     maintenanceFeeEstimate: "To be updated",
     priceLastUpdated: "13 August 2026",
     priceListDocument: "/documents/price-list-placeholder.pdf",
@@ -214,13 +221,13 @@ export const project = {
   content: {
     heroHeadline: "Lentor Gardens Residences",
     heroSupportingCopy:
-      "A 499-unit 99-year leasehold condo along Lentor Gardens, within walking distance of Lentor MRT and Lentor Modern Mall. 2 to 4-bedroom apartments and 3 strata terraces, indicatively priced from $2,050 psf. Book a private showflat appointment with Amelia Lek Kai Yi.",
+      "A 499-unit 99-year leasehold condo along Lentor Gardens, within walking distance of Lentor MRT and Lentor Modern Mall. 2 to 4-bedroom apartments and 3 strata terraces. Request the current developer price list. Book a private showflat appointment with Amelia Lek Kai Yi.",
     aboutOverview:
-      "*Lentor Gardens Residences* is the newest addition to the Lentor estate, located along Lentor Gardens and within walking distance to *Lentor MRT* and *Lentor Modern Mall*. Developed by *Kingsford Lentor Project Pte Ltd* (part of the Kingsford Group; Huttons Asia Pte Ltd's marketing appointment for this project was confirmed by *Kingsford Huray Development Pte. Ltd.* on behalf of itself and its respective subsidiaries), this 99-year leasehold condominium offers 499 residential units across a mix of 2 to 4-bedroom apartments and 3 strata terraces.\n\nLaunched on 4 July 2026, Lentor Gardens Residences offers connectivity via the Thomson-East Coast Line, proximity to Lentor Modern Mall, and a unit mix that includes larger, family-sized layouts. Units are indicatively priced from *$2,050 psf*.",
+      "*Lentor Gardens Residences* is the newest addition to the Lentor estate, located along Lentor Gardens and within walking distance to *Lentor MRT* and *Lentor Modern Mall*. Developed by *Kingsford Lentor Project Pte Ltd* (part of the Kingsford Group; Huttons Asia Pte Ltd's marketing appointment for this project was confirmed by *Kingsford Huray Development Pte. Ltd.* on behalf of itself and its respective subsidiaries), this 99-year leasehold condominium offers 499 residential units across a mix of 2 to 4-bedroom apartments and 3 strata terraces.\n\nLaunched on 4 July 2026, Lentor Gardens Residences offers connectivity via the Thomson-East Coast Line, proximity to Lentor Modern Mall, and a unit mix that includes larger, family-sized layouts. Pricing is confirmed against the developer's current price list on request.",
     locationAnalysis:
       "Lentor Gardens Residences is a 2-minute walk from Lentor MRT Station on the Thomson-East Coast Line, with Lentor Modern Mall located right at the station for supermarkets, dining and retail. The development connects to the Central Expressway (CTE) and Seletar Expressway (SLE), and is directly linked to Hillock Park.",
     pricingAnalysis:
-      "Lentor Gardens Residences offers 499 residential units, comprising 2 to 4-bedroom layouts plus 3 strata terrace units, alongside 3 retail shops. Indicative pricing starts from $2,050 psf, subject to change and developer confirmation.",
+      "Lentor Gardens Residences offers 499 residential units, comprising 2 to 4-bedroom layouts plus 3 strata terrace units, alongside 3 retail shops. Pricing and unit availability change as the project sells — request the current developer-issued price list for confirmed figures.",
     unitSelectionAnalysis:
       "Lentor Gardens Residences offers 2 to 4-bedroom apartments — spanning approximately 646 to 1,356 sqft, with select layouts including a study — alongside 3 strata terrace houses of 1,496 sqft each, a landed-housing option within the development. Buyers should request the full floorplan set and stacking plan to compare unit orientation, facing and facility-view premiums before selecting a specific stack.",
     buyerConsiderations:
@@ -263,7 +270,8 @@ export const project = {
     },
     {
       question: "What is the price of Lentor Gardens Residences?",
-      answer: "Indicative pricing at Lentor Gardens Residences starts from $2,050 psf, subject to change and developer confirmation.",
+      answer:
+        "Pricing at Lentor Gardens Residences is confirmed against the developer's current price list, which changes as units sell. Request the latest price list for confirmed, unit-by-unit figures.",
     },
     {
       question: "Which MRT line serves Lentor Gardens Residences?",

@@ -81,3 +81,36 @@ export function buildFaqSchema() {
     })),
   };
 }
+
+// Describes the development itself, which the other builders do not — they describe the agent,
+// the agency and the page. No rich result exists for condominium developments; this exists so
+// search engines and assistants can resolve the project as an entity. Prices and availability
+// are deliberately absent: add them only from a developer-issued price list.
+export function buildApartmentComplexSchema(canonicalUrl: string) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "ApartmentComplex",
+    name: project.general.projectName,
+    url: canonicalUrl,
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: project.general.streetAddress,
+      addressLocality: "Singapore",
+      addressRegion: project.general.district,
+      addressCountry: "SG",
+    },
+    numberOfAccommodationUnits: {
+      "@type": "QuantitativeValue",
+      value: project.general.residentialUnitCount,
+    },
+    amenityFeature: [
+      { "@type": "LocationFeatureSpecification", name: "Direct access to Hillock Park", value: true },
+      { "@type": "LocationFeatureSpecification", name: "2-minute walk to Lentor MRT (TE5)", value: true },
+      {
+        "@type": "LocationFeatureSpecification",
+        name: "Carpark lots",
+        value: project.general.numberOfCarparkLots,
+      },
+    ],
+  };
+}

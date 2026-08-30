@@ -38,7 +38,9 @@ const categories = Array.from(new Set(unitTypes.map((u) => u.bedroomCategory)));
           />
           <div class="floorplan-card-body">
             <h3>{unit.type}</h3>
-            <p>{unit.approxAreaSqft} sqft (approx.)</p>
+            <p>{unit.approxAreaSqft === "To be updated"
+              ? "Floor areas released at preview"
+              : `${unit.approxAreaSqft} sqft (approx.)`}</p>
             <span class="availability-tag">{unit.availability}</span>
           </div>
         </button>

@@ -16,18 +16,33 @@ import Footer from "@/components/Footer.astro";
 import StickyMobileContactBar from "@/components/StickyMobileContactBar.astro";
 import ConsentNotice from "@/components/ConsentNotice.astro";
 import { project } from "@/data/project";
-import { buildRealEstateAgentSchema, buildFaqSchema } from "@/utils/structuredData";
+import { agent } from "@/data/agent";
+import {
+  buildRealEstateAgentSchema,
+  buildFaqSchema,
+  buildApartmentComplexSchema,
+} from "@/utils/structuredData";
 
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
-const title = "Amelia Lek Kai Yi | Huttons Asia Pte Ltd (R072094A) | Marketing Lentor Gardens Residences";
-const description =
-  "Independent marketing site operated by Amelia Lek Kai Yi (CEA Reg. R072094A), a licensed salesperson with Huttons Asia Pte Ltd, appointed to market Lentor Gardens Residences — a 499-unit 99-yr leasehold condo near Lentor MRT. Not the official developer website.";
+// Google cuts the search headline at roughly 60 characters. The project name leads so it
+// survives that cut — it is the term buyers actually search. The agent name and CEA
+// registration number stay inside the title, so identity is still declared before the page
+// renders; the full disclosure remains in the notice bar, header, "About this website"
+// section, FAQ and footer.
+const title = `${project.general.projectName} | ${agent.fullName} ${agent.ceaRegistrationNumber}`;
+// Meta descriptions are cut at roughly 155 characters. Lead with what a buyer is looking for
+// and close with the independent-agent disclosure so it survives truncation.
+const description = `Lentor Gardens Residences, ${project.general.districtShort}. 499 units, 2–4 bedrooms and strata terraces, 2 min walk to Lentor MRT. Price list on request. Independent agent site.`;
 ---
 
 <BaseLayout
   title={title}
   description={description}
-  structuredData={[buildRealEstateAgentSchema(canonicalUrl), buildFaqSchema()]}
+  structuredData={[
+    buildRealEstateAgentSchema(canonicalUrl),
+    buildFaqSchema(),
+    buildApartmentComplexSchema(canonicalUrl),
+  ]}
 >
   <Header />
   <main id="main-content">

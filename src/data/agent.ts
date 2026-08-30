@@ -25,7 +25,7 @@ export const agent = {
   email: "amelialekera@gmail.com",
   profileImage: null as { src: string; alt: string; width: number; height: number } | null,
   shortBio:
-    "Amelia Lek is a CEA-registered salesperson with Huttons Asia Pte Ltd, specialising in new-launch private residential projects in Singapore. [SHORT BIOGRAPHY — replace with verified professional background. Do not include unverified achievements, awards, sales figures, or years of experience.]",
+    "Amelia Lek Kai Yi is a CEA-registered salesperson with Huttons Asia Pte Ltd, specialising in new-launch private residential projects in Singapore. [SHORT BIOGRAPHY — replace with verified professional background. Do not include unverified achievements, awards, sales figures, or years of experience.]",
   specialisations: [
     "New-launch project analysis",
     "Pricing and unit-selection guidance",

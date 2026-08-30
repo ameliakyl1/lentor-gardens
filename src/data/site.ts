@@ -34,7 +34,7 @@ export const tracking = {
 } as const;
 
 export const site = {
-  name: "Lentor Gardens Residences | Amelia Lek, Huttons Asia",
+  name: "Lentor Gardens Residences | Amelia Lek Kai Yi, Huttons Asia",
   legalDisclosureShort:
     "Independent marketing website operated by Amelia Lek Kai Yi, a CEA-registered salesperson with Huttons Asia Pte Ltd. Not the official developer website.",
   copyrightHolder: "Amelia Lek Kai Yi",
