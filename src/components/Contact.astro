@@ -35,12 +35,23 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
         response time.
       </p>
 
-      <p class="agent-credentials">
-        {agent.fullName} · CEA Registration No.: {agent.ceaRegistrationNumber} · {agent.estateAgencyName}
-        (Licence No.: {agent.estateAgencyLicenceNumber})
-        <br />
-        <a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer">Verify on CEA Public Register</a>
-      </p>
+      <div class="agent-credentials">
+        <span class="credentials-label">Marketed by</span>
+        <p class="credentials-name">{agent.fullName}</p>
+        <p class="credentials-lines">
+          Licensed Real Estate Salesperson<br />
+          CEA Reg. No. <span class="credentials-reg">{agent.ceaRegistrationNumber}</span><br />
+          {agent.estateAgencyName} · CEA Lic. No. {agent.estateAgencyLicenceNumber}
+        </p>
+        <a
+          class="credentials-verify"
+          href={agent.ceaVerificationUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Verify on CEA Public Register
+        </a>
+      </div>
     </div>
 
     <form id="enquiry-form" class="contact-form card reveal-on-scroll" novalidate>
@@ -135,12 +146,59 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
 </section>
 
 <style>
-  .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: var(--space-12); align-items: start; }
+  /* `align-items: stretch` (the default) lets the intro column match the form's height, which is
+     what allows the credentials block below to push itself to the bottom with margin-top: auto
+     and sit level with the lower part of the form, rather than floating mid-column. */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: var(--space-12); }
   @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+
+  .contact-intro { display: flex; flex-direction: column; }
   .contact-direct { display: flex; gap: var(--space-4); flex-wrap: wrap; margin: var(--space-6) 0 var(--space-4); }
   .response-note { font-size: 0.85rem; color: var(--color-ink-soft); }
-  .agent-credentials { font-size: 0.85rem; color: var(--color-ink-soft); margin-top: var(--space-4); padding-top: var(--space-4); border-top: 1px solid var(--color-border); }
-  .agent-credentials a { font-size: 0.85rem; }
+  /* Sits at the foot of the intro column as a distinct "who is marketing this" signature block,
+     mirroring the reference layout. margin-top: auto pins it to the bottom of the flex column. */
+  .agent-credentials {
+    margin-top: auto;
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+  }
+  .credentials-label {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin-bottom: var(--space-3);
+  }
+  .credentials-name {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--color-ink);
+    line-height: 1.2;
+    margin: 0 0 var(--space-2);
+  }
+  .credentials-lines {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: var(--color-ink-soft);
+    margin: 0 0 var(--space-3);
+    max-width: none;
+  }
+  .credentials-reg { color: var(--color-accent); }
+  .credentials-verify {
+    font-size: 1rem;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+
+  @media (max-width: 900px) {
+    /* No second column to align against once stacked, so the auto-margin has nothing to push
+       against — restore a normal gap instead. */
+    .agent-credentials { margin-top: var(--space-8); }
+  }
   .phone-input { display: flex; border: 1px solid var(--color-border); border-radius: var(--radius-sm); overflow: hidden; }
   .phone-prefix { display: flex; align-items: center; padding: 0 var(--space-3); background: var(--color-border); color: var(--color-ink); font-size: 0.9rem; white-space: nowrap; border-right: 1px solid var(--color-border); }
   .phone-number { border: none; border-radius: 0; flex: 1; }

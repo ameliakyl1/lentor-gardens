@@ -2,11 +2,20 @@
 import { project } from "@/data/project";
 import { agent } from "@/data/agent";
 
-const { general, content, media } = project;
+const { general, media } = project;
 
 const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}?text=${encodeURIComponent(
   project.contact.whatsappMessage
 )}`;
+
+// Hero stat strip. Values come straight from the verified project data — no new facts are
+// introduced here, these are the same figures shown in the About quick-facts table.
+const stats = [
+  { value: "499", label: "Residential Units" },
+  { value: "2–4", label: "Bedrooms" },
+  { value: "99 Years", label: "Tenure" },
+  { value: general.districtShort, label: "District" },
+];
 ---
 
 <section class="hero" id="top">
@@ -31,19 +40,36 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
       Presented by {agent.fullName} · {agent.estateAgencyName} · CEA {agent.ceaRegistrationNumber}
     </p>
 
-    <h1 class="hero-heading">{content.heroHeadline}</h1>
+    <p class="hero-facts-line">
+      <span class="hero-facts-rule" aria-hidden="true"></span>
+      {general.tenure} · {general.districtShort} · {general.region}
+    </p>
 
-    <ul class="hero-facts">
-      <li><strong>District:</strong> {general.districtShort}</li>
-      <li><strong>Area:</strong> {general.region}</li>
-      <li><strong>Tenure:</strong> {general.tenure}</li>
-    </ul>
+    <h1 class="hero-heading">
+      <span class="hero-heading-label">Marketing</span>
+      <span class="hero-heading-name">{general.projectName}</span>
+    </h1>
 
     <div class="hero-ctas">
-      <a href="#contact" class="btn btn-accent" data-track="book_showflat">Book Showflat</a>
-      <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" class="btn btn-outline-light" data-track="click_whatsapp">
+      <a href="#contact" class="hero-btn hero-btn-primary" data-track="book_showflat">Book Showflat</a>
+      <a
+        href={whatsappUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="hero-btn hero-btn-whatsapp"
+        data-track="click_whatsapp"
+      >
         WhatsApp Us
       </a>
+    </div>
+
+    <div class="hero-stats">
+      {stats.map((stat) => (
+        <div class="hero-stat">
+          <span class="hero-stat-value">{stat.value}</span>
+          <span class="hero-stat-label">{stat.label}</span>
+        </div>
+      ))}
     </div>
 
     <p class="hero-updated">Information last updated: {general.lastUpdated}</p>
@@ -53,6 +79,10 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
 <style>
   .hero {
     position: relative;
+    /* Slides up underneath the transparent sticky header (see Header.astro) so the photo shows
+       through behind the nav on page load, instead of the header sitting as a separate opaque
+       bar above it. */
+    margin-top: calc(-1 * var(--nav-height));
     min-height: 88vh;
     display: flex;
     align-items: flex-end;
@@ -68,39 +98,134 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
   .hero-scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(14, 20, 15, 0.15) 0%, rgba(14, 20, 15, 0.75) 100%);
+    background: linear-gradient(180deg, rgba(14, 20, 15, 0.25) 0%, rgba(14, 20, 15, 0.8) 100%);
+    box-shadow: inset 0 0 0 1px rgba(14, 20, 15, 0.35);
   }
   .hero-content {
+    /* Overrides .container's default 1200px cap to 1400px, matching Header.astro's
+       .header-inner — otherwise this block would centre independently of the header and sit
+       right of the header's left edge on wide screens. `width: 100%` is required alongside
+       max-width because .hero is a flex row: a flex item without an explicit width shrinks to
+       fit its content instead of stretching to that max-width. */
+    width: 100%;
+    max-width: 1400px;
     position: relative;
     color: #fff;
     padding-block: var(--space-16) var(--space-16);
-    max-width: 760px;
   }
   .hero-eyebrow {
     margin: 0 0 var(--space-3);
     color: var(--color-on-brand-accent);
     font-size: 0.75rem;
-    font-weight: 600;
+    font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
   }
-  .hero-heading { color: #fff; margin-bottom: var(--space-4); }
-  .hero-facts {
-    list-style: none;
+  .hero-facts-line {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin: 0 0 var(--space-6);
+    color: rgba(255, 255, 255, 0.65);
+    font-size: 0.72rem;
+    font-weight: 400;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .hero-facts-rule {
+    display: inline-block;
+    width: 28px;
+    height: 1px;
+    background: rgba(255, 255, 255, 0.4);
+  }
+  .hero-heading {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--space-4);
+  }
+  .hero-heading-label {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(1.5rem, 2vw + 1rem, 2.25rem);
+    color: #fff;
+    line-height: 1.1;
+  }
+  .hero-heading-name {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 700;
+    font-size: clamp(2.5rem, 5vw + 1rem, 4rem);
+    color: var(--color-on-brand-accent);
+    line-height: 1.1;
+  }
+  .hero-ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-top: var(--space-6); margin-bottom: var(--space-8); }
+  .hero-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-4) var(--space-8);
+    border: 1px solid transparent;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+    box-shadow: 0 8px 24px rgba(14, 20, 15, 0.35);
+    transition: background-color 150ms ease, border-color 150ms ease, color 150ms ease, transform 150ms ease, box-shadow 150ms ease;
+  }
+  .hero-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(14, 20, 15, 0.4);
+  }
+  .hero-btn-primary {
+    background: var(--color-accent);
+    color: var(--color-on-accent);
+  }
+  .hero-btn-primary:hover { background: var(--color-accent-strong); }
+  /* WhatsApp brand green, matched to the sibling site — deliberately not a palette token, since
+     it identifies the channel rather than this project. */
+  .hero-btn-whatsapp {
+    background: #25d366;
+    color: #fff;
+  }
+  .hero-btn-whatsapp:hover { background: #1ebc59; }
+
+  .hero-stats {
     display: flex;
     flex-wrap: wrap;
-    gap: var(--space-2) var(--space-6);
-    padding: 0;
-    margin: 0 0 var(--space-8);
-    font-size: 0.92rem;
+    gap: var(--space-6) var(--space-8);
+    padding: var(--space-6) var(--space-8);
+    margin-bottom: var(--space-4);
+    background: rgba(14, 20, 15, 0.55);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45), 0 4px 12px rgba(0, 0, 0, 0.3);
+    max-width: fit-content;
   }
-  .hero-ctas { display: flex; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-6); }
+  .hero-stat { display: flex; flex-direction: column; gap: 2px; }
+  .hero-stat-value {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-on-brand-accent);
+    line-height: 1;
+  }
+  .hero-stat-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.65);
+  }
+
   .hero-updated { font-size: 0.8rem; color: rgba(255, 255, 255, 0.7); margin: 0; }
 
   /*
     Mobile keeps the desktop composition rather than degrading into a ragged stack: the two CTAs
-    stay a side-by-side pair of equal width instead of wrapping to whatever their label lengths
-    happen to produce.
+    stay a side-by-side pair of equal width, and the stat strip becomes a balanced 2x2 instead of
+    wrapping 3-then-1 and orphaning the last stat on its own row.
   */
   @media (max-width: 640px) {
     .hero { min-height: 92vh; }
@@ -111,12 +236,23 @@ const whatsappUrl = `https://wa.me/${agent.whatsappNumber.replace(/[^\d]/g, "")}
       grid-template-columns: 1fr 1fr;
       gap: var(--space-3);
     }
-    .hero-ctas .btn {
-      padding-inline: var(--space-2);
+    .hero-btn {
+      padding: var(--space-3) var(--space-2);
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      white-space: normal; /* allow the longer WhatsApp label to wrap inside its half */
       text-align: center;
-      white-space: normal;
       line-height: 1.3;
     }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-4) var(--space-6);
+      padding: var(--space-4) var(--space-6);
+      max-width: none;
+    }
+    .hero-stat-value { font-size: 1.4rem; }
   }
 </style>
 

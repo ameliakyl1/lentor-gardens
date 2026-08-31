@@ -29,9 +29,11 @@
   --color-on-brand-accent: #d6b37a; /* lighter gold for hover/active states on --color-brand (the deepened --color-accent is too dark against it) */
   --color-success: #3f6b4b;
   --color-error: #7a3b3b;
-
-  --font-display: "Domine", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
-  --font-sans: "Sora", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  /* Lato in both display and body roles. Humanist sans with open apertures; it carries the
+     small-size disclosure copy legibly, which matters because every operator disclosure on this
+     site is set at body size deliberately. */
+  --font-display: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 
   --space-1: 0.25rem;
   --space-2: 0.5rem;
@@ -67,7 +69,7 @@
   --color-brand: #2f6b63;
   --color-on-brand: #ffffff;
   --color-on-brand-accent: #ffffff;
-  --font-display: "Domine", Georgia, serif;
+  --font-display: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Forest-forward variant — the logo roundel's deep green promoted to the accent role */
@@ -81,7 +83,7 @@
   --color-brand: #1c3923;
   --color-on-brand: #f5f4ee;
   --color-on-brand-accent: #d6b37a;
-  --font-display: "Domine", Georgia, serif;
+  --font-display: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 /* Terracotta variant, lifted from the interior material board's warm stone closeups */
@@ -96,7 +98,7 @@
   --color-brand: #9c5b3c;
   --color-on-brand: #ffffff;
   --color-on-brand-accent: #ffffff;
-  --font-display: "Domine", Georgia, serif;
+  --font-display: "Lato", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -180,7 +182,7 @@ section { padding-block: var(--space-24); }
   letter-spacing: 0.14em;
   font-size: 0.75rem;
   color: var(--color-accent-strong);
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: var(--space-2);
   display: block;
 }
@@ -260,7 +262,7 @@ section { padding-block: var(--space-24); }
   justify-content: center;
   gap: var(--space-2);
   font-family: var(--font-sans);
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.95rem;
   padding: 0.85rem 1.5rem;
   border-radius: var(--radius-sm);
@@ -304,7 +306,7 @@ section { padding-block: var(--space-24); }
    ========================================================================== */
 
 .form-field { margin-bottom: var(--space-4); }
-.form-label { display: block; font-weight: 600; margin-bottom: var(--space-2); font-size: 0.95rem; }
+.form-label { display: block; font-weight: 700; margin-bottom: var(--space-2); font-size: 0.95rem; }
 .form-hint { font-size: 0.85rem; color: var(--color-ink-soft); margin-top: var(--space-1); }
 .form-error { font-size: 0.85rem; color: var(--color-error); margin-top: var(--space-1); }
 
@@ -377,12 +379,12 @@ table.data-table th, table.data-table td {
   padding: var(--space-3) var(--space-4);
   border-bottom: 1px solid var(--color-border);
 }
-table.data-table th { font-family: var(--font-sans); font-weight: 600; color: var(--color-ink-soft); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.06em; }
+table.data-table th { font-family: var(--font-sans); font-weight: 700; color: var(--color-ink-soft); text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.06em; }
 
 @media (max-width: 640px) {
   table.data-table, table.data-table thead, table.data-table tbody, table.data-table tr, table.data-table td { display: block; width: 100%; }
   table.data-table thead { display: none; }
   table.data-table tr { border-bottom: 1px solid var(--color-border); padding: var(--space-3) 0; }
   table.data-table td { border: none; padding: var(--space-1) 0; }
-  table.data-table td::before { content: attr(data-label); font-weight: 600; display: block; font-size: 0.75rem; color: var(--color-ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
+  table.data-table td::before { content: attr(data-label); font-weight: 700; display: block; font-size: 0.75rem; color: var(--color-ink-soft); text-transform: uppercase; letter-spacing: 0.06em; }
 }

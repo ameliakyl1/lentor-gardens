@@ -50,12 +50,25 @@ import { agent } from "@/data/agent";
 </header>
 
 <style>
+  /*
+    Transparent-over-hero header: starts transparent with light text so the hero photo shows
+    through behind it (Hero.astro pulls itself up under this header by --nav-height). Once the
+    hero scrolls out of view the script below adds .is-solid, switching to the brand green so
+    nav stays readable over the rest of the page. Text stays light in both states because the
+    solid fill is dark green — unlike the sibling site, whose solid fill is cream and therefore
+    has to swap to dark ink.
+  */
   .site-header {
     position: sticky;
     top: var(--notice-height);
-    z-index: 100;
+    z-index: 200;
+    background: transparent;
+    box-shadow: none;
+    transition: background-color 220ms ease, box-shadow 220ms ease;
+  }
+  .site-header.is-solid {
     background: var(--color-brand);
-    border-bottom: 1px solid var(--color-brand);
+    box-shadow: 0 1px 0 rgba(14, 20, 15, 0.12), 0 4px 12px rgba(14, 20, 15, 0.1);
   }
 
   .header-inner {
@@ -78,7 +91,7 @@ import { agent } from "@/data/agent";
   .brand-name {
     font-family: var(--font-display);
     font-size: 1.15rem;
-    font-weight: 600;
+    font-weight: 700;
     color: var(--color-on-brand);
     white-space: nowrap;
   }
@@ -104,7 +117,7 @@ import { agent } from "@/data/agent";
     white-space: nowrap;
     color: var(--color-on-brand);
     opacity: 0.85;
-    font-weight: 500;
+    font-weight: 400;
     font-size: 0.78rem;
     letter-spacing: 0.07em;
     text-transform: uppercase;
@@ -128,7 +141,7 @@ import { agent } from "@/data/agent";
     background: var(--color-accent);
     color: var(--color-on-accent);
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
     font-size: 0.8rem;
     letter-spacing: 0.09em;
     text-transform: uppercase;
@@ -257,4 +270,21 @@ import { agent } from "@/data/agent";
   );
 
   sections.forEach((section) => observer.observe(section));
+
+  // Header starts transparent over the hero photo, then becomes opaque once the hero scrolls
+  // out of view — otherwise nav text would be unreadable over the plain page background below.
+  const header = document.getElementById("site-header");
+  const heroSection = document.getElementById("top");
+  if (header && heroSection) {
+    const heroObserver = new IntersectionObserver(
+      ([entry]) => {
+        header.classList.toggle("is-solid", !entry.isIntersecting);
+      },
+      { rootMargin: `-${(header as HTMLElement).offsetHeight}px 0px 0px 0px`, threshold: 0 }
+    );
+    heroObserver.observe(heroSection);
+  } else if (header) {
+    // No hero on this page (e.g. legal pages) — header should always read solid.
+    header.classList.add("is-solid");
+  }
 </script>

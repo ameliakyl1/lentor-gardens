@@ -53,42 +53,17 @@ const baseSchemas = [
     <link rel="manifest" href="/site.webmanifest" />
 
     <!--
-      Preload the hero image (the LCP element) so the browser's preload scanner fetches it
-      immediately, before it finishes parsing the rest of <head>. Most Google Ads traffic to
-      this template lands on mobile, so the mobile crop is preloaded with higher priority via
-      the media query — it must match the <source media="(max-width: 700px)"> breakpoint in
-      Hero.astro exactly, or the browser will fetch the wrong variant twice.
-    -->
-    <link
-      rel="preload"
-      as="image"
-      href={project.media.heroImage.mobileSrc}
-      media="(max-width: 700px)"
-      fetchpriority="high"
-    />
-    <link
-      rel="preload"
-      as="image"
-      href={project.media.heroImage.src}
-      media="(min-width: 701px)"
-      fetchpriority="high"
-    />
-
-    <!-- Browser chrome tint (mobile address bar, task switcher) — matches the brand navy/gold theme. -->
-    <meta name="theme-color" content="#f6f4ee" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#14131f" media="(prefers-color-scheme: dark)" />
-
-    <!--
       Fonts: loaded with font-display swap and preconnect to avoid layout shift / render block.
-      Domine (serif) and Sora (geometric sans) are freely-licensed stand-ins chosen to echo the
-      clean, minimal display type used throughout the Lentor Gardens Residences Architect
-      Briefing (V2, 25 May 2026), paired with the briefing's own navy/gold palette in
-      src/styles/global.css.
+      The site uses Lato for both display and body roles.
+
+      Lato ships 100/300/400/700/900 only — there is no 500 or 600. Component weights were
+      remapped explicitly (500 -> 400, 600 -> 700) rather than left to the browser's font
+      matching, so the rendered weight is a decision rather than a fallback.
     -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Domine:wght@400;500;600;700&family=Sora:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,400;1,700&display=swap"
       rel="stylesheet"
     />
 
