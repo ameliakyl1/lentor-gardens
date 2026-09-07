@@ -8,21 +8,17 @@ const year = new Date().getFullYear();
 <footer class="site-footer border-top">
   <div class="container footer-grid">
     <div class="footer-col footer-brand">
-      <span class="footer-col-heading">About This Website</span>
+      <span class="footer-col-heading">{agent.fullName}</span>
+      {/* Condensed on purpose. The full disclosure — appointment chain, authorisation scope and
+          the CEA verification link — is the #about-website section directly above this footer;
+          repeating it verbatim here put the same paragraph on screen twice in a row. */}
       <div class="footer-disclosure-box">
         <p>
-          Independently operated by <strong>{agent.fullName}</strong> (CEA Reg. No. {agent.ceaRegistrationNumber}),
-          licensed with <strong>{agent.estateAgencyName}</strong> (CEA Lic. No. {agent.estateAgencyLicenceNumber}).{" "}
-          {agent.estateAgencyName} is formally appointed as marketing agency for {project.general.projectName}{" "}
-          by <strong>{project.general.developerAppointingEntity}</strong> on behalf of itself and its respective
-          subsidiaries — including <strong>{project.general.developer}</strong>, the project's licensed developer
-          (HDB Housing Developer's Licence No. C1550) — with authorisation covering online and offline
-          advertising. This is <strong>not</strong> the developer's official website — pricing and availability
-          are for general reference only.{" "}
-          <a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer">Verify on CEA Register</a>.
+          Independent marketing website operated by {agent.fullName} (CEA Reg. No.{" "}
+          {agent.ceaRegistrationNumber}), licensed with {agent.estateAgencyName}, formally
+          appointed to market {project.general.projectName}. Not the developer's website.
         </p>
       </div>
-      <p class="footer-meta">Information last updated: {project.general.lastUpdated}</p>
     </div>
 
     <div class="footer-col">
@@ -44,6 +40,7 @@ const year = new Date().getFullYear();
       <span class="footer-col-heading">Information</span>
       <ul class="footer-links">
         <li><a href="/about-amelia">About Amelia Lek Kai Yi</a></li>
+        <li><a href="#about-website">About This Website</a></li>
         <li><a href="/privacy">Privacy Policy</a></li>
         <li><a href="/terms">Terms of Use</a></li>
         <li><a href="/disclaimer">Disclaimer</a></li>
