@@ -25,7 +25,7 @@ export const agent = {
   },
   mobileNumber: "+65 8186 6812",
   whatsappNumber: "+65 8186 6812", // digits only with country code, e.g. 65 9XXX XXXX, for wa.me links
-  email: "amelialekera@gmail.com",
+  email: "lek.kaiyi@gmail.com",
   profileImage: { src: "/images/agent/profile.jpg", alt: "Amelia Lek Kai Yi", width: 400, height: 400 } as {
       src: string;
       alt: string;
