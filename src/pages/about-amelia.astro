@@ -121,9 +121,11 @@ const telHref = `tel:${agent.mobileNumber.replace(/\s/g, "")}`;
   }
   .about-page .section-eyebrow { display: block; margin-bottom: var(--space-4); }
 
+  /* The photo column is a fixed 160px, so below roughly 900px the name is squeezed into whatever
+     is left and wraps badly. Stack early rather than letting that happen. */
   .about-page-head {
     display: grid;
-    grid-template-columns: 160px 1fr;
+    grid-template-columns: 160px minmax(0, 1fr);
     gap: var(--space-6);
     align-items: center;
     margin-bottom: var(--space-8);
@@ -135,7 +137,14 @@ const telHref = `tel:${agent.mobileNumber.replace(/\s/g, "")}`;
     border-radius: 2px;
     display: block;
   }
-  .about-page h1 { margin: 0 0 var(--space-2); line-height: 1.15; }
+  /* A name, not a hero headline — the global h1 scale is far too large here and forces the name
+     onto three lines in the mid-range widths. */
+  .about-page h1 {
+    margin: 0 0 var(--space-2);
+    font-size: clamp(1.75rem, 1.3rem + 1.6vw, 2.5rem);
+    line-height: 1.15;
+    text-wrap: balance;
+  }
 
   /* Identity lines sit at body size — this page exists to state who the operator is, so nothing
      about that is set smaller than the surrounding copy. */
@@ -156,9 +165,12 @@ const telHref = `tel:${agent.mobileNumber.replace(/\s/g, "")}`;
 
   .about-page .disclaimer-box { margin-top: var(--space-8); font-size: 1rem; }
 
+  @media (max-width: 900px) {
+    .about-page-head { grid-template-columns: 1fr; gap: var(--space-4); }
+  }
+
   @media (max-width: 640px) {
     .about-page { padding-block: var(--space-8); }
-    .about-page-head { grid-template-columns: 1fr; gap: var(--space-4); }
     .about-page-photo { width: 130px; height: 130px; }
   }
 </style>
