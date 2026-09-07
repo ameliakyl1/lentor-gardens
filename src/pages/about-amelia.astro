@@ -1,0 +1,164 @@
+---
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import Header from "@/components/Header.astro";
+import Footer from "@/components/Footer.astro";
+import { agent } from "@/data/agent";
+import { project } from "@/data/project";
+
+/*
+  A standalone page about the operator, separate from the project pages.
+
+  Google's Unacceptable business practices guidance asks advertisers to "describe your business on
+  your website ... like an 'About us' page". The homepage carries a short version of this above the
+  project content; this page is the full version, linked from the footer of every page so it is
+  reachable from anywhere on the site.
+
+  Only verifiable claims belong here. Job title is as published on the official Huttons agent
+  profile; registration and licence numbers are checkable on the CEA public register, which is
+  linked directly. No sales figures, rankings, awards or years of experience.
+*/
+
+const whatsappHref = `https://wa.me/${agent.whatsappNumber.replace(/\D/g, "")}`;
+const telHref = `tel:${agent.mobileNumber.replace(/\s/g, "")}`;
+---
+
+<BaseLayout
+  title={`About ${agent.fullName} — ${agent.jobTitle}, ${agent.estateAgencyName}`}
+  description={`${agent.fullName}, CEA Reg. No. ${agent.ceaRegistrationNumber}, is a licensed salesperson with ${agent.estateAgencyName} marketing new-launch private residential projects in Singapore. Independent agent site — not the developer's website.`}
+>
+  <Header />
+
+  <main id="main-content">
+    <section class="about-page">
+      <div class="container about-page-inner">
+        <a href="/" class="about-back">&larr; Back to {project.general.projectName}</a>
+
+        <span class="section-eyebrow">Your Singapore new-launch property adviser</span>
+
+        <div class="about-page-head">
+          {agent.profileImage && (
+            <img
+              src={agent.profileImage.src}
+              alt={agent.profileImage.alt}
+              width={agent.profileImage.width}
+              height={agent.profileImage.height}
+              class="about-page-photo"
+              loading="eager"
+              decoding="async"
+            />
+          )}
+          <div>
+            <h1>{agent.fullName}</h1>
+            <p class="about-page-role">{agent.jobTitle}</p>
+            <p class="about-page-cea">
+              {agent.estateAgencyName} · CEA Reg. {agent.ceaRegistrationNumber} · Agency Licence {agent.estateAgencyLicenceNumber}
+            </p>
+          </div>
+        </div>
+
+        <p class="about-page-bio">{agent.shortBio}</p>
+
+        <h2>How I work</h2>
+        <p>
+          My job is to help you judge a development on its facts rather than on marketing copy. That
+          means going through pricing and the unit mix in plain language, being straight about what
+          is and is not confirmed by the developer, and giving you the current developer-issued
+          documents so you can decide in your own time.
+        </p>
+        <p>
+          Where something is not yet released — a price list, a floor plan, a launch date — I will
+          tell you that rather than estimate it.
+        </p>
+
+        <h2>What I can help with</h2>
+        <ul class="about-page-list">
+          {agent.specialisations.map((item) => <li>{item}</li>)}
+        </ul>
+
+        <h2>Get in touch</h2>
+        <div class="about-page-cta">
+          <a href={whatsappHref} target="_blank" rel="noopener noreferrer" class="btn btn-accent">WhatsApp {agent.displayName}</a>
+          <a href={telHref} class="btn">Call {agent.mobileNumber}</a>
+          <a href={`mailto:${agent.email}`} class="btn">Email</a>
+        </div>
+
+        <h2>Verify my registration</h2>
+        <p>
+          Every licensed salesperson in Singapore appears on the Council for Estate Agencies public
+          register. You can check my registration, my licence status and the agency I am registered
+          with there — search for “{agent.fullName}” or registration number {agent.ceaRegistrationNumber}.
+        </p>
+        <p class="about-page-links">
+          <a href={agent.ceaVerificationUrl} target="_blank" rel="noopener noreferrer">Verify on the CEA Public Register</a>
+          <span aria-hidden="true">·</span>
+          <a href={agent.huttonsAgentProfileUrl} target="_blank" rel="noopener noreferrer">My Huttons agent profile</a>
+        </p>
+
+        <p class="disclaimer-box">
+          This is an independent property marketing website operated by {agent.fullName}, a
+          CEA-registered salesperson with {agent.estateAgencyName}. It is <strong>not</strong> the
+          official developer website for {project.general.projectName}, and it is not operated by or
+          affiliated with {project.general.developerShortName.replace(/\.$/, "")}.
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer />
+</BaseLayout>
+
+<style>
+  .about-page { padding-block: var(--space-12); }
+  .about-page-inner { max-width: 760px; }
+
+  .about-back {
+    display: inline-block;
+    margin-bottom: var(--space-6);
+    font-size: 1rem;
+    color: var(--color-accent-strong);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .about-page .section-eyebrow { display: block; margin-bottom: var(--space-4); }
+
+  .about-page-head {
+    display: grid;
+    grid-template-columns: 160px 1fr;
+    gap: var(--space-6);
+    align-items: center;
+    margin-bottom: var(--space-8);
+  }
+  .about-page-photo {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 2px;
+    display: block;
+  }
+  .about-page h1 { margin: 0 0 var(--space-2); line-height: 1.15; }
+
+  /* Identity lines sit at body size — this page exists to state who the operator is, so nothing
+     about that is set smaller than the surrounding copy. */
+  .about-page-role { margin: 0 0 var(--space-1); font-size: 1rem; color: var(--color-ink); }
+  .about-page-cea { margin: 0; font-size: 1rem; color: var(--color-ink-soft); }
+
+  .about-page-bio { font-size: 1rem; line-height: 1.75; margin-bottom: var(--space-8); }
+  .about-page h2 { margin: var(--space-8) 0 var(--space-3); }
+  .about-page p { font-size: 1rem; line-height: 1.75; margin-bottom: var(--space-4); }
+
+  .about-page-list { margin: 0 0 var(--space-4); padding-left: var(--space-5); font-size: 1rem; line-height: 1.8; }
+
+  .about-page-cta { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-bottom: var(--space-4); }
+
+  .about-page-links { display: flex; flex-wrap: wrap; gap: var(--space-2) var(--space-3); align-items: center; }
+  .about-page-links a { color: var(--color-accent-strong); text-decoration: underline; text-underline-offset: 2px; }
+  .about-page-links span { color: var(--color-border); }
+
+  .about-page .disclaimer-box { margin-top: var(--space-8); font-size: 1rem; }
+
+  @media (max-width: 640px) {
+    .about-page { padding-block: var(--space-8); }
+    .about-page-head { grid-template-columns: 1fr; gap: var(--space-4); }
+    .about-page-photo { width: 130px; height: 130px; }
+  }
+</style>
