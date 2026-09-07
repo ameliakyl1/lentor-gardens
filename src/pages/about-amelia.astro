@@ -121,14 +121,19 @@ const telHref = `tel:${agent.mobileNumber.replace(/\s/g, "")}`;
   }
   .about-page .section-eyebrow { display: block; margin-bottom: var(--space-4); }
 
-  /* The photo column is a fixed 160px, so below roughly 900px the name is squeezed into whatever
-     is left and wraps badly. Stack early rather than letting that happen. */
+  /* Flex rather than a fixed grid: the photo is optional, and with grid a missing photo left the
+     text sitting in the 160px photo track. Here the text simply takes the full width instead, and
+     wraps to its own line once there is no room beside the photo. */
   .about-page-head {
-    display: grid;
-    grid-template-columns: 160px minmax(0, 1fr);
+    display: flex;
+    flex-wrap: wrap;
     gap: var(--space-6);
     align-items: center;
     margin-bottom: var(--space-8);
+  }
+  .about-page-head > div {
+    flex: 1 1 320px;
+    min-width: 0;
   }
   .about-page-photo {
     width: 160px;
@@ -166,7 +171,7 @@ const telHref = `tel:${agent.mobileNumber.replace(/\s/g, "")}`;
   .about-page .disclaimer-box { margin-top: var(--space-8); font-size: 1rem; }
 
   @media (max-width: 900px) {
-    .about-page-head { grid-template-columns: 1fr; gap: var(--space-4); }
+    .about-page-head { gap: var(--space-4); }
   }
 
   @media (max-width: 640px) {

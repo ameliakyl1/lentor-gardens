@@ -26,7 +26,12 @@ export const agent = {
   mobileNumber: "+65 8186 6812",
   whatsappNumber: "+65 8186 6812", // digits only with country code, e.g. 65 9XXX XXXX, for wa.me links
   email: "amelialekera@gmail.com",
-  profileImage: null as { src: string; alt: string; width: number; height: number } | null,
+  profileImage: { src: "/images/agent/profile.jpg", alt: "Amelia Lek Kai Yi", width: 400, height: 400 } as {
+      src: string;
+      alt: string;
+      width: number;
+      height: number;
+    } | null,
   shortBio:
       "Amelia Lek Kai Yi is a licensed real estate salesperson registered with the Council for Estate Agencies and an Associate Senior Marketing Director with Huttons Asia Pte Ltd. She works with buyers and investors on new-launch private residential projects in Singapore, and also advises on condominium, HDB, landed and commercial property. Her role is to help buyers assess a development on its facts — unit mix, pricing, layout and location — and to arrange showflat viewings and access to developer-issued documentation.",
   specialisations: [
