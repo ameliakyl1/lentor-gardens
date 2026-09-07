@@ -5,6 +5,9 @@
 export const agent = {
   fullName: "Amelia Lek Kai Yi",
   displayName: "Amelia Lek Kai Yi",
+  // As shown on the official Huttons agent profile — verifiable, unlike a
+  // self-described title would be.
+  jobTitle: "Associate Senior Marketing Director",
   ceaRegistrationNumber: "R072094A",
   estateAgencyName: "Huttons Asia Pte Ltd",
   estateAgencyLicenceNumber: "L3008899K",
@@ -25,7 +28,7 @@ export const agent = {
   email: "amelialekera@gmail.com",
   profileImage: null as { src: string; alt: string; width: number; height: number } | null,
   shortBio:
-    "Amelia Lek Kai Yi is a CEA-registered salesperson with Huttons Asia Pte Ltd, specialising in new-launch private residential projects in Singapore. [SHORT BIOGRAPHY — replace with verified professional background. Do not include unverified achievements, awards, sales figures, or years of experience.]",
+      "Amelia Lek Kai Yi is a licensed real estate salesperson registered with the Council for Estate Agencies and an Associate Senior Marketing Director with Huttons Asia Pte Ltd. She works with buyers and investors on new-launch private residential projects in Singapore, and also advises on condominium, HDB, landed and commercial property. Her role is to help buyers assess a development on its facts — unit mix, pricing, layout and location — and to arrange showflat viewings and access to developer-issued documentation.",
   specialisations: [
     "New-launch project analysis",
     "Pricing and unit-selection guidance",
