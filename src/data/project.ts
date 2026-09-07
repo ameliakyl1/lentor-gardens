@@ -286,7 +286,7 @@ export const project = {
   contact: {
     whatsappMessage:
       "Hi Amelia, I'm interested in Lentor Gardens Residences and would like to find out more.",
-    contactFormRecipient: "amelialekera@gmail.com",
+    contactFormRecipient: "lek.kaiyi@gmail.com",
   },
 } as const;
 
